@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+ db:
+    image: mysql:latest
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: recetas
+      MYSQL_USER: recetas
+      MYSQL_PASSWORD: recetas
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    expose:
+      - 3036
+    networks:
+      - recetas
+
+ phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
+    networks:
+      - recetas
+
+networks:
+ recetas:
+    driver: bridge
+
+volumes:
+ dbdata:

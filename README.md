@@ -1,22 +1,28 @@
 ## Previo
+
 ### Requisitos previos
 
-* Servidor de BD MySQL
-* Maven (versión > 3.5.x)
-* (opcional) GIT
-* (opcional) IDE Java (Eclipse, Netbeans, IntelliJ)
+- Servidor de BD MySQL
+- Maven (versión > 3.5.x)
+- Docker
+- (opcional) GIT
+- (opcional) IDE Java (Eclipse, Netbeans, IntelliJ)
 
-**Nota:** En los equipos de laboratorio, es conveniente establecer la variable de entorno JAVA_PATH, para que el comando `mvn` (Maven) compile y ejecute los proyectos siempre con el mismo JDK. 
+**Nota:** En los equipos de laboratorio, es conveniente establecer la variable de entorno JAVA_PATH, para que el comando `mvn` (Maven) compile y ejecute los proyectos siempre con el mismo JDK.
 
- ```sh 
- export JAVA_HOME=/usr/lib/jvm/jdk-20 
+```sh
+export JAVA_HOME=/usr/lib/jvm/jdk-20
 
- export PATH=$JAVA_HOME/bin:$PATH 
- ```
+export PATH=$JAVA_HOME/bin:$PATH
+```
 
-### Crear BD para los ejemplos  (si no se ha hecho antes)
+### Inicializar Mysql con PhpMyAdmin para configuración más rapida
 
-* Crear BD "recetas" en MySQL 
+- docker compose up: en la carpeta y el resto ya esta
+
+### Crear BD para los ejemplos (si no se ha hecho antes)
+
+- Crear BD "recetas" en MySQL
 
 ```sh
 mysql -u root -p    [pedirá la contraseña de MySQL]
@@ -28,24 +34,28 @@ mysql> grant all privileges on recetas.* to recetas@localhost;
 ```
 
 Adicionalmente, puede ser necesario establecer un formato de fecha compatible
+
 ```
 mysql> set @@global.time_zone = '+00:00';
 mysql> set @@session.time_zone = '+00:00';
 ```
 
 ## CREAR PROYECTO SPRING BOOT
+
 Existen varias alternativas
-* Crear un proyecto Maven vacío e incluir las dependencias de los _starters_ de Spring Boot
-* Usar Spring Tool Suite ([https://spring.io/tools](https://spring.io/tools)) y crear un nuevo proyecto _String Starter project_
-* Crear el proyecto desde Spring Initializr ([https://start.spring.io/](https://start.spring.io/))
+
+- Crear un proyecto Maven vacío e incluir las dependencias de los _starters_ de Spring Boot
+- Usar Spring Tool Suite ([https://spring.io/tools](https://spring.io/tools)) y crear un nuevo proyecto _String Starter project_
+- Crear el proyecto desde Spring Initializr ([https://start.spring.io/](https://start.spring.io/))
 
 ### Características del proyecto
+
 ```
 Project: Maven Project
 Language: Java
 Spring Boot version: 3.1.5
 
-Proyecto: 
+Proyecto:
    groupId: es.uvigo.dagss
    artefactId: recetas
    package: es.uvigo.mei.dagss
