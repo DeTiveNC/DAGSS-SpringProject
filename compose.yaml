@@ -15,19 +15,6 @@ services:
       - ./mysql:/var/lib/mysql
     networks:
       - recetas
-  backend:
-    build: ./backend
-    container_name: backend
-    ports:
-      - 8080:80
-    networks:
-      - recetas
-    depends_on:
-      - db
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/recetas
-      - SPRING_DATASOURCE_USERNAME=recetas
-      - SPRING_DATASOURCE_PASSWORD=recetas
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
