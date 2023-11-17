@@ -9,7 +9,8 @@ services:
       MYSQL_DATABASE: recetas
       MYSQL_USER: recetas
       MYSQL_PASSWORD: recetas
-    ports: -3306:3306
+    ports:
+      - 3306:3306
     volumes:
       - ./mysql:/var/lib/mysql
     networks:
@@ -17,7 +18,8 @@ services:
   backend:
     build: ./backend
     container_name: backend
-    ports: -8080:80
+    ports:
+      - 8080:80
     networks:
       - recetas
     depends_on:
