@@ -1,7 +1,7 @@
-version: '3'
+version: '3.8'
 
 services:
- db:
+  db:
     image: mysql:latest
     container_name: db
     environment:
@@ -9,16 +9,25 @@ services:
       MYSQL_DATABASE: recetas
       MYSQL_USER: recetas
       MYSQL_PASSWORD: recetas
-    ports:
-      - "3306:3306"
+    ports: -3306:3306
     volumes:
       - ./mysql:/var/lib/mysql
-    expose:
-      - 3036
     networks:
       - recetas
+  backend:
+    build: ./backend
+    container_name: backend
+    ports: -8080:80
+    networks:
+      - recetas
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/recetas
+      - SPRING_DATASOURCE_USERNAME=recetas
+      - SPRING_DATASOURCE_PASSWORD=recetas
 
- phpmyadmin:
+  phpmyadmin:
     image: phpmyadmin/phpmyadmin
     container_name: pma
     environment:
@@ -32,8 +41,8 @@ services:
       - recetas
 
 networks:
- recetas:
+  recetas:
     driver: bridge
 
 volumes:
- dbdata:
+  dbdata:
