@@ -44,5 +44,4 @@ networks:
   recetas:
     driver: bridge
 
-volumes:
   dbdata:
