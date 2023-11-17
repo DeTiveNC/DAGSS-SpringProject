@@ -7,8 +7,8 @@ COPY src /workdir/server/src
 RUN mvn clean install
 
 # Add the wait-for-mysql.sh script
-COPY wait-for-mysql.sh ./wait-for-mysql.sh
-RUN chmod +x ./wait-for-mysql.sh
+COPY wait-for-mysql.sh /workdir/server/wait-for-mysql.sh
+RUN chmod +x /workdir/server/wait-for-mysql.sh
 
 
 FROM builder AS dev-envs
