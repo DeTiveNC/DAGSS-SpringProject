@@ -41,20 +41,42 @@
 - Tercer Punto - Medicos
 	- Home
 	- Visualizacion de Agenda
+		-Marcar cita como "Ausente".
 	- Gestion de Cita Actual (atencion paciente)
-	- Creación de preescripciones
-	- Generación de "planes de recetas" para preescripción
+		-Buscar paciente cita actual (nombre y apellidos, fecha de nacimiento, dirección).
+		-Buscar prescripciones actuales paciente.
+			-Borrar prescripciones paciente -> Prescripcion(inactiva), receta(anulada).
+		-Marcar cita como "completada".
+	- Creación de prescripciones
+		-Busqueda de medicamentos parcial.
+		-Creación de prescripcion.(Medicamento, paciente, medico, dosis diaria(double), indicaciones(String), fecha de inicio(actual), fecha de fin, estado de la prescripcion[activo/inactivo] {por defecto activo}).
+	- Generación de "planes de recetas" para prescripción
+		-Generacion de plan de receta automatica basada en dosis/dia y días de la prescripción.
+		-Receta(Prescripción, fecha de validez inicial, fecha de validez final, número de unidades del medicamento a servir, estado de la recera[planificada, servida, anulada] {por defecto planificada}, farmacia donde se sirvio la receta por {defecto null}).
 	- Perfil
+		-Modificar sus datos(No login, no centro de salud, no agenda).
 
 - Cuarto Punto - Pacientes
 	- Home
 	- Visualización de Citas
+		-Busqueda de citas "planificadas" futuras.
+			-citas (nombre del médico, fecha y hora, duración,estado).
+		-Anular cita "planificada".
 	- Creación de Citas
+		-Nueva cita con medico asignado.
+			-Busqueda de horas libres para el medico asignado (15 minutos).
+			-Cita(paciente,medico,fecha de cita(dia,mes,año), hora de inicio de la cita, duracion de la cita(15 min por defecto),estado[Completa, planificada, anulada, ausente]{valor inicial "PLANIFICADA"}).
 	- Visualización de "Planes de Recetas"
+		-Busqueda de recetas pendientes de ser servidas.
+			-receta(medicamento(principio activo, fabricante), medico, las fechas de validez de cada receta (inical y final) y el número de unidades de medicamentos).
 	- Perfil
-
+		-Modificar sus datos(No medico, no centro de salud, no login).
 - Quinto Punto - Farmacia
 	- Home
 	- Consulta de Recetas de Paciente
+		-Busqueda de Receta(valida en la fecha actual) por nº de tarjeta del Paciente.
+			-Recetan (medicamento, médico que la generó, fechas de validez).
 	- Anotación de Recetas "servidas"
+		-Marcar Receta como "servida" (Fecha valida actualmente) y vinculacion de receta servida con la farmacia.
 	- Perfil
+		-Modificar tus datos(Menos login).
