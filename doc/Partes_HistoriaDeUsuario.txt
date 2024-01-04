@@ -1,0 +1,60 @@
+- Primer punto - Login de Usuarios
+	- Nos dan usuario y contraseña
+	- Correcto
+		- Le dara un response con su rol
+	- Incorrecto
+		- Devolverle CreditialsNotfound o Notfound y Mensaje contraseña o usuario incorrectos
+
+- Segundo Punto - Administradores
+	- Home
+		- Opcion de desconectar
+			- Deslogear Admin
+	- Gestion de Admins
+		- Entrega de Lista de Admins ( FindAll() pero sin enviar id y password)
+		- Edicion de un admin (name, email, activo) (login y pass, nuevo usuario)
+			- Correcto - Actualización de Lista
+		- Borrar Admin
+			- Cambio de activo a false
+			- Correcto - Actualización de Lista
+		- Nuevo Admin
+			- Creación de nuevo usuario
+			- Correcto - Actualización de Lista
+	- Gestion de Centros de Salud
+		- Visualización de Lista de Centros ( findAll() pero con nombre, localidad, provincia y activo)
+		- Busqueda de Centros tipo Like ( posibilidad de busqueda por funcion jpa o template)
+		- Editar centros ( nombre, localidad, provincia y activo ), actualizar lista
+		- Borrar centro ( cambiar de activo true a false), actualizar lista
+		- Nuevo centro ( nombre, direccion, telefono, mail (activo = true agregar en service))
+	- Gestion de Medicos
+		- Visualización de medicos ( findAll() pero no puede haber dni, email, numero de colegiado)
+		- Busqueda de medico por nombre o localidad con opcion de tipo like ( jpa busqueda localidad o template con like )
+		- Edicio de medicos (nombre y apelidos, centro de salud, localidad, provincia, activo [ true | false ]) 
+		- Borrar ( pasar de activo true a false)
+		- Nuevo ( indicar todoso los valores , password es numero de colegiado )
+		- Vinculación de centros de salud es 1 a N con lista de centros para el medico
+		
+	- Gestion de Pacientes
+	- Gestion de Farmacias
+	- Gestion "Manual" de Citas
+	- Gestion de Medicamentos
+
+- Tercer Punto - Medicos
+	- Home
+	- Visualizacion de Agenda
+	- Gestion de Cita Actual (atencion paciente)
+	- Creación de preescripciones
+	- Generación de "planes de recetas" para preescripción
+	- Perfil
+
+- Cuarto Punto - Pacientes
+	- Home
+	- Visualización de Citas
+	- Creación de Citas
+	- Visualización de "Planes de Recetas"
+	- Perfil
+
+- Quinto Punto - Farmacia
+	- Home
+	- Consulta de Recetas de Paciente
+	- Anotación de Recetas "servidas"
+	- Perfil
