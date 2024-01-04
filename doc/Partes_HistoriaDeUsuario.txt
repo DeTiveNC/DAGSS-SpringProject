@@ -32,12 +32,33 @@
 		- Borrar ( pasar de activo true a false)
 		- Nuevo ( indicar todoso los valores , password es numero de colegiado )
 		- Vinculación de centros de salud es 1 a N con lista de centros para el medico
-		
 	- Gestion de Pacientes
+		- Lista de Pacientes ( findAll() pero con datos de (nombre y apelidos, centro de salud, localidad, provincia, activo 			[ true | false ])
+		- Busqueda de tipo de Like ( jpa normal con string o template )
+		- Busqueda por Centro de salud y por medico
+		- Editar  (nombre y apelidos, centro de salud, localidad, provincia, medico activo [ true | false ])
+		- Eliminar (Cambiar de activo true a false y actualizar)
+		- Nuevo  (Crear todo y password es DNI)
+		- Vinculacion Centros de Salud  (Esto segun la provincia del paciente)
+		- Vinculacion Medicos  (Esto segun el centro asignado)
 	- Gestion de Farmacias
+		- Lista de Farmacias ( findAll() aunque con nombre establecimiento, localidad, provincia, activo [ true | false ])
+		- Lista segun por nombre de establecimiento o por localidad
+		- Editar farmacia (nombre establecimiento, localidad, provincia, activo [ true | false ]), actualizar lista
+		- Eliminar (pasar de activo true a false)
+		- Nuevo ( todo e inidicar password con el nº de colegiado del farmaceutico )
 	- Gestion "Manual" de Citas
+		- Estado de las citas hacer enumerado posiblemente
+		- Citas registradas ( findAll() sin duracion)
+		- Busqueda de cita segun fecha y filtrado por medico o paciente
+		- Anular cita (obtener cita y en este caso se marca anulada) , actualizar lista
+		- Sin creación manual de administradores
 	- Gestion de Medicamentos
-
+		- Lista de medicamentos con lo siguiente: nombre comercial, principio activo, fabricante, familia
+		- Lista por filtración de nombre comercial, principio activo, fabricante o famila por tipo like
+		- Editar medicamento (nombre comercial, principio activo, fabricante, familia, dosis, activo)
+		- Eliminar medicamento (set activo de true a false)
+		- Nuevo medicamento (nombre comercial, principio activo, fabricante, familia, dosis, activo)
 - Tercer Punto - Medicos
 	- Home
 	- Visualizacion de Agenda
