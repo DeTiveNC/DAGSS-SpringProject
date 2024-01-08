@@ -19,14 +19,10 @@ public class Farmacia extends Usuario {
     private Direccion direccion;
     private String telefono;
     private String email;
-    @OneToMany
-    @JoinColumn(name = "recetas_id")
-    private List<Receta> recetas;
     public Farmacia() {
         super(TipoUsuario.FARMACIA);
-        this.recetas = new ArrayList<>();
     }
-    public Farmacia(String nombreEstablecimiento, String nombreFarmaceutico, String apellidosFarmaceutico, String dni, String numColegiado, Direccion direccion, String telefono, String email, List<Receta> recetas) {
+    public Farmacia(String nombreEstablecimiento, String nombreFarmaceutico, String apellidosFarmaceutico, String dni, String numColegiado, Direccion direccion, String telefono, String email) {
         this.nombreEstablecimiento = nombreEstablecimiento;
         this.nombreFarmaceutico = nombreFarmaceutico;
         this.apellidosFarmaceutico = apellidosFarmaceutico;
@@ -35,7 +31,6 @@ public class Farmacia extends Usuario {
         this.direccion = direccion;
         this.telefono = telefono;
         this.email = email;
-        this.recetas = recetas;
     }
 
     public String getNombreEstablecimiento() {
@@ -100,13 +95,5 @@ public class Farmacia extends Usuario {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public List<Receta> getRecetas() {
-        return recetas;
-    }
-
-    public void setRecetas(List<Receta> recetas) {
-        this.recetas = recetas;
     }
 }

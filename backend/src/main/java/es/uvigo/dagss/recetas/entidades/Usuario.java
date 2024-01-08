@@ -151,8 +151,4 @@ public abstract class Usuario implements Serializable {
 		return Objects.equals(fechaAlta, other.fechaAlta)
 				&& Objects.equals(login, other.login);
 	}
-
-
-    
- 
 }

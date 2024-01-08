@@ -19,5 +19,4 @@ public enum TipoEstado {
     public String getEtiqueta() {
         return etiqueta;
     }
-
 }

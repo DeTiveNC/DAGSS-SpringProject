@@ -12,8 +12,8 @@ import java.util.Optional;
 
 @Repository
 public interface MedicoRepositorio extends JpaRepository<Medico, Long> {
-    @Query("select m from Medico m where ((m.centroDeSalud.direccion.localidad) LIKE lower(concat('%', :term, '%')) OR (m.nombre) LIKE lower(concat('%', :term, '%')))")
-    List<Medico> findMedicosByNombreOrCentroDeSaludDireccionLocalidad(@Param("term") String term);
+    @Query("select m from Medico m where ((m.centroDeSalud.direccion.localidad) LIKE lower(concat('%', :term, '%')) and (m.nombre) LIKE lower(concat('%', :term2, '%')))")
+    List<Medico> findMedicosByNombreAndCentroDeSaludDireccionLocalidad(@Param("term") String term, @Param("term2") String term2);
     List<Medico> findMedicosByCentroDeSaludNombre(String nombre);
     Optional<Medico> findMedicoByLogin(String login);
 }
