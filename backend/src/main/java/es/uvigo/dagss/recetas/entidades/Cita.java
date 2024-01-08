@@ -18,6 +18,7 @@ public class Cita implements Serializable {
     @JoinColumn(name = "medico_id")
     private Medico medico;
     private Date fecha;
+    @OrderBy
     private Time hora;
     private Float duracion;
     @Enumerated(EnumType.STRING)
