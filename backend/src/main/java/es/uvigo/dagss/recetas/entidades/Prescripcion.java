@@ -13,10 +13,10 @@ public class Prescripcion implements Serializable {
     @OneToOne
     @JoinColumn(name = "medicamento_prescrito")
     private Medicamento medicamento;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "medico_creador")
     private Medico medico;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "paciente_prescrito")
     private Paciente paciente;
     private Double dosis;
@@ -30,8 +30,12 @@ public class Prescripcion implements Serializable {
     public Prescripcion() {
     }
 
-    public Prescripcion(Long id, Medicamento medicamento, Medico medico, Paciente paciente, Double dosis, String indicaciones, Date fechInPres, Date fechFinPres, TipoEstado estado) {
-        this.id = id;
+    public Prescripcion( Medicamento medicamento,
+                         Medico medico,
+                         Paciente paciente,
+                         Double dosis, String indicaciones,
+                         Date fechInPres, Date fechFinPres,
+                         TipoEstado estado) {
         this.medicamento = medicamento;
         this.medico = medico;
         this.paciente = paciente;
