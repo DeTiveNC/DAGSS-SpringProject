@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface RecetaRepositorio extends JpaRepository<Receta, Receta> {
-    @Query("SELECT r FROM Receta r WHERE r.estado = 'PLANIFICADA' AND r.prescripcion.paciente.numTarjetaSanitaria = :term")
+    @Query("SELECT r FROM Receta r WHERE (:term is null or r.estado = 'PLANIFICADA' AND r.prescripcion.paciente.numTarjetaSanitaria = :term)")
     List<Receta> findRecetasByEstado(@Param("term") String term);
 }
