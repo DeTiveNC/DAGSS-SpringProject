@@ -1,6 +1,5 @@
 package es.uvigo.dagss.recetas.repositorios;
 
-import es.uvigo.dagss.recetas.entidades.Administrador;
 import es.uvigo.dagss.recetas.entidades.Medico;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +15,5 @@ public interface MedicoRepositorio extends JpaRepository<Medico, Long> {
     List<Medico> findMedicosByNombreAndCentroDeSaludDireccionLocalidad(@Param("term") String term, @Param("term2") String term2);
     List<Medico> findMedicosByCentroDeSaludNombre(String nombre);
     Optional<Medico> findMedicoByLogin(String login);
+    Optional<Medico> findMedicoByNumeroColegiado(String numColegiado);
 }

@@ -24,6 +24,7 @@ public interface AdministradorServicios {
     List<Paciente> findAllPacientes();
     List<Paciente> findPacienteByNombreoLocalidad(String nombre, String localidad);
     List<Paciente> findPacienteByCentroDeSaludyMedico(String nombre, String localidad);
+    List<Paciente> findPacienteByCentroDeSaludyMedico(String centroDeSalud, Long medico);
     Paciente editPacienteA(Paciente paciente);
     Paciente deletePaciente(String login);
     Paciente newPaciente(Paciente paciente);
@@ -33,9 +34,9 @@ public interface AdministradorServicios {
     Farmacia deleteFarmacia(String login);
     Farmacia newFarmacia(Farmacia farmacia);
     List<Cita> findAllCitas();
-    List<Cita> findCitasByFechayMedicooPaciente(Date fecha, String numColegiado, String numTarjetaSanitaria);
+    List<Cita> findCitasByFechayMedicooPaciente(String numColegiado, String numTarjetaSanitaria);
     Cita editCitaA(Cita cita);
-    Cita deleteCita(String login);
+    Cita deleteCita(Long login);
     List<Medicamento> findAllMedicamentos();
     List<Medicamento> findMedicamentoBy4(String valor, String valor2, String valor3, String valor4);
     Medicamento editFarmacia(Medicamento medicamento);

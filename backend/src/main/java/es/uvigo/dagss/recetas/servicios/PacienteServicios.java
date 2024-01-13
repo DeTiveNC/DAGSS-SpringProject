@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface PacienteServicios {
     List<Cita> devolverCitasPaciente(String login);
-    Cita anularCitaPaciente(String login);
+    Cita anularCitaPaciente(String login,Cita citaAnular);
     Cita crearCitaPaciente(String login, String numColegiado, Date fecha, Time hora);
     List<Receta> obtenerRecetasPaciente(String login);
     List<Prescripcion> devolverPrescripcionPacientes(String numTarjetaSanitaria);

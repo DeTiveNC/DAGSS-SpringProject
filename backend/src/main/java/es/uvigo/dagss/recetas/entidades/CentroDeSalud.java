@@ -12,15 +12,17 @@ public class CentroDeSalud implements Serializable {
     private Direccion direccion;
     private String telefono;
     private String email;
+    private Boolean activo;
 
     public CentroDeSalud() {
     }
 
-    public CentroDeSalud(String nombre, Direccion direccion, String telefono, String email) {
+    public CentroDeSalud(String nombre, Direccion direccion, String telefono, String email, Boolean activo) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
         this.email = email;
+        this.activo = activo;
     }
 
     public String getNombre() {
@@ -53,5 +55,13 @@ public class CentroDeSalud implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 }

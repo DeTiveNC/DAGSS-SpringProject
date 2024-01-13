@@ -28,8 +28,7 @@ public class Cita implements Serializable {
     public Cita() {
     }
 
-    public Cita(Long id, Paciente paciente, Medico medico,Date fecha, Time hora, Float duracion, TipoEstado estado) {
-        this.id = id;
+    public Cita( Paciente paciente, Medico medico,Date fecha, Time hora, Float duracion, TipoEstado estado) {
         this.paciente = paciente;
         this.medico = medico;
         this.fecha = fecha;

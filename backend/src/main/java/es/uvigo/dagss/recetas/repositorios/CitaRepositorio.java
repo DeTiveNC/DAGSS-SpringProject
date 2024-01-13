@@ -2,7 +2,6 @@ package es.uvigo.dagss.recetas.repositorios;
 
 import es.uvigo.dagss.recetas.entidades.Cita;
 import es.uvigo.dagss.recetas.entidades.Medico;
-import es.uvigo.dagss.recetas.entidades.Paciente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +20,6 @@ public interface CitaRepositorio extends JpaRepository<Cita, Long> {
     @Query("SELECT c FROM Cita c WHERE c.medico = :medico AND c.fecha = :fecha")
     List<Cita> findAppointmentsByMedicoAndFecha(@Param("medico") Medico medico, @Param("fecha") Date fecha);
     @Query("SELECT c FROM Cita c WHERE c.medico = :medico AND c.fecha = :fecha AND c.hora = :hora")
-    List<Cita> findAppointmentsByMedicoAndFechaAndHora(@Param("medico") Medico medico, @Param("fecha") Date fecha, @Param("hora") Time hora);
+    Cita findAppointmentByMedicoAndFechaAndHora(@Param("medico") Medico medico, @Param("fecha") Date fecha, @Param("hora") Time hora);
+    List<Cita> findCitasByMedico(Medico medico);
 }
