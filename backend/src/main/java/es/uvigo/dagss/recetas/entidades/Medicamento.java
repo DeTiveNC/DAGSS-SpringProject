@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import java.io.Serializable;
+import java.util.Objects;
+
 @Entity
 public class Medicamento implements Serializable {
     @Id
@@ -72,5 +74,17 @@ public class Medicamento implements Serializable {
 
     public void setActivo(Boolean activo) {
         this.activo = activo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Medicamento that)) return false;
+        return Objects.equals(getNombreComercial(), that.getNombreComercial());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNombreComercial());
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Objects;
 
 @Entity
 public class Cita implements Serializable {
@@ -96,5 +97,17 @@ public class Cita implements Serializable {
 
     public void setEstado(TipoEstado estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cita cita)) return false;
+        return Objects.equals(getId(), cita.getId()) && Objects.equals(getPaciente(), cita.getPaciente()) && Objects.equals(getMedico(), cita.getMedico());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getPaciente(), getMedico());
     }
 }

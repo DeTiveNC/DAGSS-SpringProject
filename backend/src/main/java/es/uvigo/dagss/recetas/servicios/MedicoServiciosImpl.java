@@ -11,6 +11,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -42,15 +43,20 @@ public class MedicoServiciosImpl implements MedicoServicios{
     }
 
     @Override
-    public Cita devolverCitaActual(String numColegiado) {
-        LocalDate localDate = LocalDate.now();
-        Date datenow = Date.valueOf(localDate);
-        LocalTime localTime = LocalTime.now();
-        Time timeNow = Time.valueOf(localTime);
-        return citaRepositorio.findAppointmentByMedicoAndFechaAndHora(medicoRepositorio.findMedicoByNumeroColegiado(numColegiado).get(),datenow, timeNow);
+    public Cita devolverCitaActual(String numColegiado, Date fechaCita,Time timeCita) {
+        Optional<Medico> citaBusq = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        return citaBusq.map(
+                medico -> citaRepositorio.findAppointmentByMedicoAndFechaAndHora(medico, fechaCita, timeCita))
+                .orElse(null);
     }
     @Override
     public Cita anularCita(String numTarjetaSanitaria,Cita cita) {
+        List<Cita> citaBusq = citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
+        TipoEstado tipoEstadoAnulada = TipoEstado.ANULADA;
+        if (citaBusq.contains(cita)){
+            cita.setEstado(tipoEstadoAnulada);
+            return citaRepositorio.save(cita);
+        }
         return null;
     }
 
@@ -76,12 +82,17 @@ public class MedicoServiciosImpl implements MedicoServicios{
     }
 
     @Override
-    public Medico viewMedico(String login) {
-        return medicoRepositorio.findMedicoByLogin(login).get();
+    public Medico viewMedico(Long id) {
+        Optional<Medico> medicoView = medicoRepositorio.findById(id);
+        return medicoView.orElse(null);
     }
 
     @Override
-    public Medico editMedico(Medico editMedico) {
-        return medicoRepositorio.save(editMedico);
+    public Medico editMedico(Long id, Medico editMedico) {
+        Optional<Medico> medicoBusq = medicoRepositorio.findById(id);
+        if (medicoBusq.isPresent() && medicoBusq.get().equals(editMedico)){
+            medicoRepositorio.save(editMedico);
+        }
+        return null;
     }
 }

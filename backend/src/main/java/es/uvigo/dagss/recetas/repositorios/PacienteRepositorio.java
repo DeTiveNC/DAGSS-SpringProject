@@ -15,6 +15,6 @@ public interface PacienteRepositorio extends JpaRepository<Paciente, Long> {
     List<Paciente> findPacientesByNombreAndLocalidad(@Param("term2") String term2, @Param("term") String term);
     Optional<Paciente> findPacienteByLogin(String login);
     Optional<Paciente> findPacienteByNumTarjetaSanitaria(String numTarjetaSanitaria);
-    @Query("select p from Paciente p, Medico m, CentroDeSalud c where ((p.centroDeSalud.nombre = :term) AND (p.medico.id = :term2))")
+    @Query("select p from Paciente p, Medico m, CentroDeSalud c where (:term is null or p.centroDeSalud.nombre = :term) AND (:term2 is null or p.medico.id = :term2)")
     List<Paciente> findPacientesByCentroDeSaludAndMedico(@Param("term") String term, @Param("term2") Long term2);
 }

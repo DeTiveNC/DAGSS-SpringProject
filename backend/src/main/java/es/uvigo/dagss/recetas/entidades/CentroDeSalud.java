@@ -3,6 +3,7 @@ package es.uvigo.dagss.recetas.entidades;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class CentroDeSalud implements Serializable {
@@ -63,5 +64,17 @@ public class CentroDeSalud implements Serializable {
 
     public void setActivo(Boolean activo) {
         this.activo = activo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CentroDeSalud that)) return false;
+        return Objects.equals(getNombre(), that.getNombre());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNombre());
     }
 }

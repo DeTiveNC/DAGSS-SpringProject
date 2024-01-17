@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FarmaciaServicios {
     List<Receta> busquedaRecetaPaciente(String numTarjetaSanitaria);
-    Boolean servirReceta(Receta receta,String numTarjetaSanitaria);
-    Farmacia editFarmacia(Farmacia editFarmacia);
-    Farmacia viewFarmacia(String login);
+    Boolean servirReceta(String numTarjetaSanitaria, Receta receta);
+    Farmacia editFarmacia(Long id,Farmacia editFarmacia);
+    Farmacia viewFarmacia(Long id);
 }

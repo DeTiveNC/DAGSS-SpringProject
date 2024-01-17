@@ -8,9 +8,11 @@ import es.uvigo.dagss.recetas.repositorios.RecetaRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class FarmaciaServiciosImpl implements FarmaciaServicios{
@@ -24,11 +26,11 @@ public class FarmaciaServiciosImpl implements FarmaciaServicios{
     }
 
     @Override
-    public Boolean servirReceta(Receta receta, String numTarjetaSanitaria) {
+    public Boolean servirReceta(String numTarjetaSanitaria, Receta receta) {
         List<Receta> recetaList = recetaRepositorio.findRecetasByEstado(numTarjetaSanitaria);
         TipoEstado tipoEstadoServida = TipoEstado.SERVIDA;
-        LocalDate localDate = null;
-        if (recetaList.contains(receta) && (!Objects.equals(receta.getFechFinVal().toLocalDate(), LocalDate.now()))){
+        LocalDate localDate = LocalDate.now();
+        if (recetaList.contains(receta) && localDate.isBefore(receta.getFechFinVal().toLocalDate())){
             receta.setEstado(tipoEstadoServida);
             recetaRepositorio.save(receta);
             return true;
@@ -37,12 +39,16 @@ public class FarmaciaServiciosImpl implements FarmaciaServicios{
     }
 
     @Override
-    public Farmacia editFarmacia(Farmacia editFarmacia) {
-        return farmaciaRepositorio.save(editFarmacia);
+    public Farmacia editFarmacia(Long id, Farmacia editFarmacia) {
+        Optional<Farmacia> farmaciaBusq = farmaciaRepositorio.findById(id);
+        if (farmaciaBusq.isPresent() && farmaciaBusq.get().equals(editFarmacia)){
+            farmaciaRepositorio.save(editFarmacia);
+        }
+        return null;
     }
 
     @Override
-    public Farmacia viewFarmacia(String login) {
-        return farmaciaRepositorio.findFarmaciaByLogin(login).get();
+    public Farmacia viewFarmacia(Long id) {
+        return farmaciaRepositorio.findById(id).get();
     }
 }

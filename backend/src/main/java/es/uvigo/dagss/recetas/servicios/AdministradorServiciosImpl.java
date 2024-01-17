@@ -32,22 +32,29 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     public List<Administrador> findAllAdmins(){
         return administradorRepositorio.findAll();
     }
-
     @Override
-    public Administrador editAdministrador(Administrador administrador){
-        return administradorRepositorio.save(administrador);
+    public Administrador editAdministrador(Long id, Administrador editAdministrador){
+        Optional<Administrador> administradorBusq = administradorRepositorio.findById(id);
+        if (administradorBusq.isPresent() && administradorBusq.get().equals(editAdministrador)){
+                return administradorRepositorio.save(editAdministrador);
+        }
+        return null;
     }
     @Override
-    public Administrador deleteAdministrador(String login){
-        Administrador administradorEliminado = administradorRepositorio.findAdministradorByLogin(login);
-        if (administradorEliminado != null){
-            administradorEliminado.setActivo(false);
-            return administradorRepositorio.save(administradorEliminado);
+    public Administrador deleteAdministrador(Long id){
+        Optional<Administrador> administradorEliminado = administradorRepositorio.findById(id);
+        if (administradorEliminado.isPresent()){
+            administradorEliminado.get().desactivar();
+            return administradorRepositorio.save(administradorEliminado.get());
         }
         return null;
     }
     @Override
     public Administrador newAdministrador(Administrador administrador){
+        List<Administrador> findAllAdmins = administradorRepositorio.findAll();
+        if (!findAllAdmins.contains(administrador)) {
+            return null;
+        }
         return administradorRepositorio.save(administrador);
     }
     @Override
@@ -59,8 +66,12 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         return centroDeSaludRepositorio.findCentroDeSaludsByNombreAndDireccion(nombre, localidad);
     }
     @Override
-    public CentroDeSalud editCentroDeSalud(CentroDeSalud centroDeSalud){
-        return centroDeSaludRepositorio.save(centroDeSalud);
+    public CentroDeSalud editCentroDeSalud(String nombreCentro, CentroDeSalud centroDeSalud){
+        Optional<CentroDeSalud> centroDeSaludBusq = centroDeSaludRepositorio.findCentroDeSaludByNombre(nombreCentro);
+        if (centroDeSaludBusq.isPresent() && centroDeSaludBusq.get().equals(centroDeSalud)){
+                return centroDeSaludRepositorio.save(centroDeSalud);
+        }
+        return null;
     }
     @Override
     public CentroDeSalud deleteCentroDeSalud(String nombre){
@@ -73,6 +84,10 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     }
     @Override
     public CentroDeSalud newCentroDeSalud(CentroDeSalud centroDeSalud){
+        List<CentroDeSalud> findAllCentro = centroDeSaludRepositorio.findAll();
+        if (!findAllCentro.contains(centroDeSalud)) {
+            return null;
+        }
         return centroDeSaludRepositorio.save(centroDeSalud);
     }
     @Override
@@ -84,21 +99,29 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         return medicoRepositorio.findMedicosByNombreAndCentroDeSaludDireccionLocalidad(nombre, localidad);
     }
     @Override
-    public Medico editMedico(Medico medico){
-        return medicoRepositorio.save(medico);
+    public Medico editMedico(Long id, Medico medico){
+        Optional<Medico> medicoBusq = medicoRepositorio.findById(id);
+        if (medicoBusq.isPresent() && medicoBusq.get().equals(medico)){
+                medicoRepositorio.save(medico);
+        }
+        return null;
     }
 
     @Override
-    public Medico deleteMedico(String login) {
-        Optional<Medico> medicoOptional = medicoRepositorio.findMedicoByLogin(login);
+    public Medico deleteMedico(Long id) {
+        Optional<Medico> medicoOptional = medicoRepositorio.findById(id);
         if (medicoOptional.isPresent()){
-            medicoOptional.get().setActivo(false);
+            medicoOptional.get().desactivar();
             return medicoRepositorio.save(medicoOptional.get());
         }
         return null;
     }
     @Override
     public Medico newMedicoA(Medico medico){
+        List<Medico> findAllMedico = medicoRepositorio.findAll();
+        if (!findAllMedico.contains(medico)) {
+            return null;
+        }
         return medicoRepositorio.save(medico);
     }
     @Override
@@ -112,29 +135,32 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     }
 
     @Override
-    public List<Paciente> findPacienteByCentroDeSaludyMedico(String nombre, String localidad) {
-        return null;
-    }
-
-    @Override
     public List<Paciente> findPacienteByCentroDeSaludyMedico(String centroDeSalud, Long medico){
         return pacienteRepositorio.findPacientesByCentroDeSaludAndMedico(centroDeSalud, medico);
     }
     @Override
-    public Paciente editPacienteA(Paciente paciente){
-        return pacienteRepositorio.save(paciente);
+    public Paciente editPacienteA(Long id, Paciente paciente){
+        Optional<Paciente> pacienteBusq = pacienteRepositorio.findById(id);
+        if (pacienteBusq.isPresent() && pacienteBusq.get().equals(paciente)){
+            pacienteRepositorio.save(paciente);
+        }
+        return null;
     }
     @Override
-    public Paciente deletePaciente(String login){
-        Optional<Paciente> pacienteeliminado = pacienteRepositorio.findPacienteByLogin(login);
-        if (pacienteeliminado.isPresent()){
-            pacienteeliminado.get().setActivo(false);
-            return pacienteRepositorio.save(pacienteeliminado.get());
+    public Paciente deletePaciente(Long id){
+        Optional<Paciente> pacienteBusq = pacienteRepositorio.findById(id);
+        if (pacienteBusq.isPresent()){
+            pacienteBusq.get().desactivar();
+            return pacienteRepositorio.save(pacienteBusq.get());
         }
         return null;
     }
     @Override
     public Paciente newPaciente(Paciente paciente){
+        List<Paciente> findAllPaciente = pacienteRepositorio.findAll();
+        if (!findAllPaciente.contains(paciente)) {
+            return null;
+        }
         return pacienteRepositorio.save(paciente);
     }
     @Override
@@ -146,20 +172,28 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         return farmaciaRepositorio.findFarmaciasByNombreEstablecimientoAndDireccionLocalidad(nombre,localidad);
     }
     @Override
-    public Farmacia editFarmaciaA(Farmacia farmacia){
-        return farmaciaRepositorio.save(farmacia);
+    public Farmacia editFarmaciaA(Long id, Farmacia editFarmacia){
+        Optional<Farmacia> farmaciaBusq = farmaciaRepositorio.findById(id);
+        if (farmaciaBusq.isPresent() && farmaciaBusq.get().equals(editFarmacia)){
+            farmaciaRepositorio.save(editFarmacia);
+        }
+        return null;
     }
     @Override
-    public Farmacia deleteFarmacia(String login){
-        Optional<Farmacia> optionalFarmacia = farmaciaRepositorio.findFarmaciaByLogin(login);
+    public Farmacia deleteFarmacia(Long id){
+        Optional<Farmacia> optionalFarmacia = farmaciaRepositorio.findById(id);
         if (optionalFarmacia.isPresent()){
-            optionalFarmacia.get().setActivo(false);
+            optionalFarmacia.get().desactivar();
             return farmaciaRepositorio.save(optionalFarmacia.get());
         }
         return null;
     }
     @Override
     public Farmacia newFarmacia(Farmacia farmacia){
+        List<Farmacia> findAllFarmacia = farmaciaRepositorio.findAll();
+        if (!findAllFarmacia.contains(farmacia)) {
+            return null;
+        }
         return farmaciaRepositorio.save(farmacia);
     }
     @Override
@@ -171,12 +205,16 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         return citaRepositorio.findCitasByMedicoAndPaciente(medicoRepositorio.findMedicoByNumeroColegiado(numColegiado).get().getNombre(), pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria).get().getNombre());
     }
     @Override
-    public Cita editCitaA(Cita cita){
-        return citaRepositorio.save(cita);
+    public Cita anularCitaA(Long id, Cita cita){
+        Optional<Cita> citaBusq = citaRepositorio.findById(id);
+        if (citaBusq.isPresent() && citaBusq.get().equals(cita)){
+            return citaRepositorio.save(cita);
+        }
+        return null;
     }
     @Override
-    public Cita deleteCita(Long login){
-        Optional<Cita> citaOptional = citaRepositorio.findById(login);
+    public Cita deleteCita(Long id){
+        Optional<Cita> citaOptional = citaRepositorio.findById(id);
         TipoEstado estadoCita = TipoEstado.ANULADA;
         if (citaOptional.isPresent()){
             citaOptional.get().setEstado(estadoCita);
@@ -193,12 +231,16 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         return medicamentoRepositorio.findMedicamentosByNombreComercialAndFabricanteAndFamiliaAndPrincipioActivo(valor,valor2,valor3,valor4);
     }
     @Override
-    public Medicamento editFarmacia(Medicamento medicamento){
-        return medicamentoRepositorio.save(medicamento);
+    public Medicamento editMedicamento(String nombreComercial, Medicamento medicamento){
+        Optional<Medicamento> medicamentoBusq = medicamentoRepositorio.findById(nombreComercial);
+        if (medicamentoBusq.isPresent() && medicamentoBusq.get().equals(medicamento)){
+            return medicamentoRepositorio.save(medicamento);
+        }
+        return null;
     }
     @Override
-    public Medicamento deleteMedicamento(String login){
-        Optional<Medicamento> medicamentoOptional = medicamentoRepositorio.findById(login);
+    public Medicamento deleteMedicamento(String nombreComercial){
+        Optional<Medicamento> medicamentoOptional = medicamentoRepositorio.findById(nombreComercial);
         if (medicamentoOptional.isPresent()){
             medicamentoOptional.get().setActivo(false);
             return medicamentoRepositorio.save(medicamentoOptional.get());
@@ -207,6 +249,10 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     }
     @Override
     public Medicamento newMedicamento(Medicamento medicamento){
+        List<Medicamento> findAllMedicamento = medicamentoRepositorio.findAll();
+        if (!findAllMedicamento.contains(medicamento)) {
+            return null;
+        }
         return medicamentoRepositorio.save(medicamento);
     }
 }

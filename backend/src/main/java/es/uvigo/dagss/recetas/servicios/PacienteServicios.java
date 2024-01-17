@@ -10,11 +10,11 @@ import java.sql.Time;
 import java.util.List;
 
 public interface PacienteServicios {
-    List<Cita> devolverCitasPaciente(String login);
-    Cita anularCitaPaciente(String login,Cita citaAnular);
-    Cita crearCitaPaciente(String login, String numColegiado, Date fecha, Time hora);
-    List<Receta> obtenerRecetasPaciente(String login);
+    List<Cita> devolverCitasPaciente(String numTarjetaSanitaria);
+    Cita anularCitaPaciente(String numTarjetaSanitaria,Cita citaAnular);
+    Cita crearCitaPaciente(Long id, String numColegiado, Date fecha, Time hora);
+    List<Receta> obtenerRecetasPaciente(String numTarjetaSanitaria);
     List<Prescripcion> devolverPrescripcionPacientes(String numTarjetaSanitaria);
-    Paciente viewPaciente(String login);
-    Paciente editPaciente(Paciente paciente);
+    Paciente viewPaciente(Long id);
+    Paciente editPaciente(Long id,Paciente paciente);
 }
