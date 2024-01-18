@@ -33,7 +33,10 @@ public class MedicoServiciosImpl implements MedicoServicios{
     private MedicamentoRepositorio medicamentoRepositorio;
     @Override
     public List<Cita> devolverCitasMedico(String login) {
-        return citaRepositorio.findCitasByMedico(medicoRepositorio.findMedicoByLogin(login).get());
+        if (medicoRepositorio.findMedicoByLogin(login).isPresent()){
+            return citaRepositorio.findCitasByMedico(medicoRepositorio.findMedicoByLogin(login).get());
+        }
+        return null;
     }
 
     @Override
@@ -86,15 +89,16 @@ public class MedicoServiciosImpl implements MedicoServicios{
         TipoEstado estadoActivo = TipoEstado.ACTIVO;
         Optional<Medico> medicoOptional= medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
         Optional<Paciente> pacienteOptional= pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
-        if((!medicoOptional.isPresent())||(!pacienteOptional.isPresent())){
+        if((!medicoOptional.isPresent()) || (!pacienteOptional.isPresent())){
             return null;
         }
         Medico medico=medicoOptional.get();
         Paciente paciente= pacienteOptional.get();
 
         Prescripcion prescripcion = new Prescripcion(medicamento, medico, paciente, dosis, indicaciones, new Date(new java.util.Date().getTime()) , fechFinPres, estadoActivo);
+        prescripcion = prescripcionRepositorio.save(prescripcion);
         generarRecetas(prescripcion);
-        return prescripcionRepositorio.save(prescripcion);
+        return prescripcion;
     }
 
     private void generarRecetas(Prescripcion prescripcion){
@@ -106,6 +110,7 @@ public class MedicoServiciosImpl implements MedicoServicios{
             Date startDate=Date.valueOf(prescripcion.getFechInPres().toLocalDate().plusDays((i)*intervalo/ncajas));
             Date endDate=Date.valueOf(prescripcion.getFechInPres().toLocalDate().plusDays((i+1)*intervalo/ncajas));
             Receta receta= new Receta(prescripcion, i+1, startDate , endDate, 1, estadoPlanificada, null);
+            recetaRepositorio.save(receta);
         }
     }
 
@@ -120,6 +125,19 @@ public class MedicoServiciosImpl implements MedicoServicios{
         Optional<Medico> medicoBusq = medicoRepositorio.findById(id);
         if (medicoBusq.isPresent() && medicoBusq.get().equals(editMedico)){
             medicoRepositorio.save(editMedico);
+        }
+        return null;
+    }
+    @Override
+    public List<Time> tiempoCitasOcupadas(String numColegiado, Date fecha) {
+        Optional<Medico> medicoCita = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        if (medicoCita.isPresent() && fecha != null){
+            List<Cita> citasActuales = citaRepositorio.findAppointmentsByMedicoAndFecha(medicoCita.get(), fecha);
+            List<Time> horaDisponible = new ArrayList<>();
+            for (Cita cita : citasActuales){
+                horaDisponible.add(cita.getHora());
+            }
+            return horaDisponible;
         }
         return null;
     }

@@ -28,7 +28,6 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     private MedicamentoRepositorio medicamentoRepositorio;
 
     @Override
-    @Transactional
     public List<Administrador> findAllAdmins(){
         return administradorRepositorio.findAll();
     }

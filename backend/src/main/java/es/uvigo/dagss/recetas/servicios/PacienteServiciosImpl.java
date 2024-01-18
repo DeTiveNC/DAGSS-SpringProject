@@ -1,10 +1,7 @@
 package es.uvigo.dagss.recetas.servicios;
 
 import es.uvigo.dagss.recetas.entidades.*;
-import es.uvigo.dagss.recetas.repositorios.CitaRepositorio;
-import es.uvigo.dagss.recetas.repositorios.PacienteRepositorio;
-import es.uvigo.dagss.recetas.repositorios.PrescripcionRepositorio;
-import es.uvigo.dagss.recetas.repositorios.RecetaRepositorio;
+import es.uvigo.dagss.recetas.repositorios.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +20,10 @@ public class PacienteServiciosImpl implements PacienteServicios{
     private RecetaRepositorio recetaRepositorio;
     @Autowired
     private PrescripcionRepositorio prescripcionRepositorio;
+    @Autowired
+    private MedicoRepositorio medicoRepositorio;
+    @Autowired
+    private MedicoServiciosImpl medicoServicios;
     @Override
     public List<Cita> devolverCitasPaciente(String numTarjetaSanitaria) {
         return citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
@@ -40,7 +41,25 @@ public class PacienteServiciosImpl implements PacienteServicios{
     }
 
     @Override
-    public Cita crearCitaPaciente(Long id, String numColegiado, Date fecha, Time hora) {
+    public Cita crearCitaPaciente(Long id, String numColegiado, Date fecha, Time horaCita) {
+        Cita newCita = new Cita();
+        TipoEstado citaEstadoCreacion = TipoEstado.PLANIFICADA;
+        Float duracionCitaDefault = (float) 15;
+        Optional<Medico> medicoCita = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        Optional<Paciente> pacienteCreadorCita = pacienteRepositorio.findById(id);
+        if (fecha != null && horaCita != null){
+            List<Time> tiempoOcupadoMedico = medicoServicios.tiempoCitasOcupadas(numColegiado, fecha);
+            boolean contains = tiempoOcupadoMedico.contains(horaCita);
+            if (!contains && medicoCita.isPresent() && pacienteCreadorCita.isPresent()){
+                newCita.setEstado(citaEstadoCreacion);
+                newCita.setDuracion(duracionCitaDefault);
+                newCita.setMedico(medicoCita.get());
+                newCita.setPaciente(pacienteCreadorCita.get());
+                newCita.setFecha(fecha);
+                newCita.setHora(horaCita);
+                return citaRepositorio.save(newCita);
+            }
+        }
         return null;
     }
 

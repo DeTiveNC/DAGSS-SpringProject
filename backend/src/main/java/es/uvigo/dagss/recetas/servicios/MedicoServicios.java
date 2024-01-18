@@ -16,4 +16,5 @@ public interface MedicoServicios {
     Prescripcion crearPrescripcionMedico(Medicamento medicamento, String numColegiado, String numTarjetaSanitaria, Double dosis, String indicaciones, Date fechFinPres);
     Medico viewMedico(Long id);
     Medico editMedico(Long id, Medico editMedico);
+    List<Time> tiempoCitasOcupadas(String numColegiado,Date fecha);
 }

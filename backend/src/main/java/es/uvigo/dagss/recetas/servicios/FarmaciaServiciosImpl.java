@@ -24,20 +24,19 @@ public class FarmaciaServiciosImpl implements FarmaciaServicios{
     public List<Receta> busquedaRecetaPaciente(String numTarjetaSanitaria) {
         return recetaRepositorio.findRecetasByEstado(numTarjetaSanitaria);
     }
-
     @Override
-    public Boolean servirReceta(String numTarjetaSanitaria, Receta receta) {
+    public Receta servirReceta(Long id_farmacia,String numTarjetaSanitaria, Receta receta) {
         List<Receta> recetaList = recetaRepositorio.findRecetasByEstado(numTarjetaSanitaria);
         TipoEstado tipoEstadoServida = TipoEstado.SERVIDA;
         LocalDate localDate = LocalDate.now();
-        if (recetaList.contains(receta) && localDate.isBefore(receta.getFechFinVal().toLocalDate())){
+        Optional<Farmacia> farmaciaServidora = farmaciaRepositorio.findById(id_farmacia);
+        if (recetaList.contains(receta) && localDate.isBefore(receta.getFechFinVal().toLocalDate()) && farmaciaServidora.isPresent()){
             receta.setEstado(tipoEstadoServida);
-            recetaRepositorio.save(receta);
-            return true;
+            receta.setFarmacia(farmaciaServidora.get());
+            return recetaRepositorio.save(receta);
         }
-        return false;
+        return null;
     }
-
     @Override
     public Farmacia editFarmacia(Long id, Farmacia editFarmacia) {
         Optional<Farmacia> farmaciaBusq = farmaciaRepositorio.findById(id);
@@ -46,7 +45,6 @@ public class FarmaciaServiciosImpl implements FarmaciaServicios{
         }
         return null;
     }
-
     @Override
     public Farmacia viewFarmacia(Long id) {
         return farmaciaRepositorio.findById(id).get();

@@ -15,6 +15,7 @@ public class Receta implements Serializable {
     @Id
     @Column(name = "recetas_id")
     private Long id;
+    @OrderBy
     private Date fechInVal;
     private Date fechFinVal;
     private Integer unid;
