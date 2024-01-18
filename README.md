@@ -62,7 +62,7 @@ Proyecto:
    name: Recetas
 
 Packaging: Jar
-Java version: 17
+Java version: 21
 
 Dependencias a incluir:
     Spring Web
