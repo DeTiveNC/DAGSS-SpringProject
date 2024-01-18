@@ -13,7 +13,7 @@ public interface MedicoServicios {
     Cita anularCita(String numTarjetaSanitaria, Cita cita);
     Cita completarCita(String numTarjetaSanitaria, Cita cita);
     List<Medicamento> devolverMedicamentos(String valor1,String valor2,String valor3,String valor4);
-    Prescripcion crearPrescripcionMedico(Medicamento medicamento, String numColegiado, String numTarjetaSanitaria, Double dosis, String indicaciones, Date fechFinPres, TipoEstado estado );
+    Prescripcion crearPrescripcionMedico(Medicamento medicamento, String numColegiado, String numTarjetaSanitaria, Double dosis, String indicaciones, Date fechFinPres);
     Medico viewMedico(Long id);
     Medico editMedico(Long id, Medico editMedico);
 }

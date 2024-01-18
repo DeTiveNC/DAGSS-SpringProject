@@ -10,8 +10,11 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+
+import java.util.*;
 
 
 @Service
@@ -20,6 +23,8 @@ public class MedicoServiciosImpl implements MedicoServicios{
     private CitaRepositorio citaRepositorio;
     @Autowired
     private MedicoRepositorio medicoRepositorio;
+    @Autowired
+    private PacienteRepositorio pacienteRepositorio;
     @Autowired
     private PrescripcionRepositorio prescripcionRepositorio;
     @Autowired
@@ -77,8 +82,31 @@ public class MedicoServiciosImpl implements MedicoServicios{
     }
 
     @Override
-    public Prescripcion crearPrescripcionMedico(Medicamento medicamento, String numColegiado, String numTarjetaSanitaria, Double dosis, String indicaciones, Date fechFinPres, TipoEstado estado) {
-        return null;
+    public Prescripcion crearPrescripcionMedico(Medicamento medicamento, String numColegiado, String numTarjetaSanitaria, Double dosis, String indicaciones, Date fechFinPres) {
+        TipoEstado estadoActivo = TipoEstado.ACTIVO;
+        Optional<Medico> medicoOptional= medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        Optional<Paciente> pacienteOptional= pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
+        if((!medicoOptional.isPresent())||(!pacienteOptional.isPresent())){
+            return null;
+        }
+        Medico medico=medicoOptional.get();
+        Paciente paciente= pacienteOptional.get();
+
+        Prescripcion prescripcion = new Prescripcion(medicamento, medico, paciente, dosis, indicaciones, new Date(new java.util.Date().getTime()) , fechFinPres, estadoActivo);
+        generarRecetas(prescripcion);
+        return prescripcionRepositorio.save(prescripcion);
+    }
+
+    private void generarRecetas(Prescripcion prescripcion){
+        long intervalo= ChronoUnit.DAYS.between(prescripcion.getFechInPres().toLocalDate(),prescripcion.getFechFinPres().toLocalDate());
+        Double totaldosis = prescripcion.getDosis()*(intervalo);
+        int ncajas =   (int) (Math.ceil(totaldosis / prescripcion.getMedicamento().getNumDosis()));
+        TipoEstado estadoPlanificada = TipoEstado.PLANIFICADA;
+        for(long i=0;i<ncajas;i++){
+            Date startDate=Date.valueOf(prescripcion.getFechInPres().toLocalDate().plusDays((i)*intervalo/ncajas));
+            Date endDate=Date.valueOf(prescripcion.getFechInPres().toLocalDate().plusDays((i+1)*intervalo/ncajas));
+            Receta receta= new Receta(prescripcion, i+1, startDate , endDate, 1, estadoPlanificada, null);
+        }
     }
 
     @Override
