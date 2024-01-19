@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -14,8 +15,10 @@ public class Paciente extends Usuario {
 	// Anadir atributos propios
     private String nombre;
     private String apellidos;
+    @JsonIgnore
     private String dni;
     private String numTarjetaSanitaria;
+    @JsonIgnore
     private String numSeguridadSocial;
     @Embedded
     private Direccion direccion;

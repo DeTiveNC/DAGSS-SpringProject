@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
@@ -37,6 +39,7 @@ public abstract class Usuario implements Serializable {
     protected TipoUsuario tipo;
 
     private String login;
+	@JsonIgnore
     private String password;
 
     @Temporal(TemporalType.TIMESTAMP)

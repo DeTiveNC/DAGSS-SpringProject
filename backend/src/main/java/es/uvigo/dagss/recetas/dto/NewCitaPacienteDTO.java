@@ -9,22 +9,12 @@ public class NewCitaPacienteDTO {
     private Time hora;
 
     public NewCitaPacienteDTO(String numColegiado, Date fecha, Time hora) {
-        this.numColegiado = numColegiado;
         this.fecha = fecha;
         this.hora = hora;
     }
 
     public NewCitaPacienteDTO() {
     }
-
-    public String getNumColegiado() {
-        return numColegiado;
-    }
-
-    public void setNumColegiado(String numColegiado) {
-        this.numColegiado = numColegiado;
-    }
-
     public Date getFecha() {
         return fecha;
     }
@@ -39,5 +29,13 @@ public class NewCitaPacienteDTO {
 
     public void setHora(Time hora) {
         this.hora = hora;
+    }
+
+    public String getNumColegiado() {
+        return numColegiado;
+    }
+
+    public void setNumColegiado(String numColegiado) {
+        this.numColegiado = numColegiado;
     }
 }
