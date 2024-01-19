@@ -35,6 +35,7 @@ public class Paciente extends Usuario {
     }
 
     public Paciente(String nombre, String apellidos, String dni, String numTarjetaSanitaria, String numSeguridadSocial, Direccion direccion, String telefono, String email, Date fechaNacimiento, CentroDeSalud centroDeSalud, Medico medico) {
+        super(TipoUsuario.PACIENTE);
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;

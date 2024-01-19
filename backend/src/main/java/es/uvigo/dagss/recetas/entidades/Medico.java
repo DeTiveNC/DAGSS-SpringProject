@@ -27,6 +27,7 @@ public class Medico extends Usuario {
         this.citas = new ArrayList<>();
     }
     public Medico(String nombre, String apellidos, String dni, String numeroColegiado, String telefono, List<Cita> citas, CentroDeSalud centroDeSalud) {
+        super(TipoUsuario.MEDICO);
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;

@@ -8,13 +8,13 @@ public class NewCitaPacienteDTO {
     private Date fecha;
     private Time hora;
 
-    public NewCitaPaciente(String numColegiado, Date fecha, Time hora) {
+    public NewCitaPacienteDTO(String numColegiado, Date fecha, Time hora) {
         this.numColegiado = numColegiado;
         this.fecha = fecha;
         this.hora = hora;
     }
 
-    public NewCitaPaciente() {
+    public NewCitaPacienteDTO() {
     }
 
     public String getNumColegiado() {

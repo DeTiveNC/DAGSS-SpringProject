@@ -5,6 +5,10 @@ import es.uvigo.dagss.recetas.entidades.Cita;
 import es.uvigo.dagss.recetas.entidades.Paciente;
 import es.uvigo.dagss.recetas.entidades.Receta;
 import es.uvigo.dagss.recetas.servicios.PacienteServicios;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,55 +18,99 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/home/pacientes")
+@Tag(name = "Paciente Endpoint", description = "Paciente Controlador")
 public class PacienteControlador {
+
     @Autowired
     private PacienteServicios pacienteServicios;
+
     @GetMapping(path = "/citas/{numTarjetaSanitaria}")
-    public ResponseEntity<List<Cita>> devolverCitasPaciente(@PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria){
+    @Operation(summary = "Recuperar citas para un paciente específico",
+            description = "Este endpoint recupera una lista de citas para el paciente especificado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recuperación exitosa de citas"),
+            @ApiResponse(responseCode = "204", description = "No se encontraron citas para el paciente especificado")
+    })
+    public ResponseEntity<List<Cita>> devolverCitasPaciente(
+            @PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria) {
         List<Cita> citasPaciente = pacienteServicios.devolverCitasPaciente(numTarjetaSanitaria);
-        if (!citasPaciente.isEmpty()){
-            return new ResponseEntity<>(citasPaciente, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(citasPaciente, HttpStatus.NO_CONTENT);
+        return citasPaciente.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(citasPaciente, HttpStatus.OK);
     }
+
     @PutMapping(path = "/citas/{numTarjetaSanitaria}")
-    public ResponseEntity<Cita> anularCitaPaciente(@PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria, @RequestBody Cita cita){
+    @Operation(summary = "Cancelar una cita para un paciente específico",
+            description = "Este endpoint cancela una cita para un paciente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cita cancelada exitosamente"),
+            @ApiResponse(responseCode = "204", description = "Error al cancelar la cita")
+    })
+    public ResponseEntity<Cita> anularCitaPaciente(
+            @PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria, @RequestBody Cita cita) {
         Cita citaAnulada = pacienteServicios.anularCitaPaciente(numTarjetaSanitaria, cita);
-        if (citaAnulada != null){
-            return new ResponseEntity<>(citaAnulada, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(citaAnulada, HttpStatus.NO_CONTENT);
+        return citaAnulada != null
+                ? new ResponseEntity<>(citaAnulada, HttpStatus.OK)
+                : new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
+
     @PostMapping(path = "/citas/{id}")
-    public ResponseEntity<Cita> crearCitaPaciente(@PathVariable("id") Long id, @RequestBody NewCitaPacienteDTO citaPaciente){
-        Cita newCitaPaciente = pacienteServicios.crearCitaPaciente(id, citaPaciente.getNumColegiado(),citaPaciente.getFecha(),citaPaciente.getHora());
-        if (newCitaPaciente != null){
-            return new ResponseEntity<>(newCitaPaciente, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(newCitaPaciente, HttpStatus.BAD_REQUEST);
+    @Operation(summary = "Crear una nueva cita para un paciente específico",
+            description = "Este endpoint crea una nueva cita para el paciente especificado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Cita creada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error al crear la cita")
+    })
+    public ResponseEntity<Cita> crearCitaPaciente(
+            @PathVariable("id") Long id, @RequestBody NewCitaPacienteDTO citaPaciente) {
+        Cita newCitaPaciente = pacienteServicios.crearCitaPaciente(id, citaPaciente.getNumColegiado(),
+                citaPaciente.getFecha(), citaPaciente.getHora());
+        return newCitaPaciente != null
+                ? new ResponseEntity<>(newCitaPaciente, HttpStatus.OK)
+                : new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
     @GetMapping(path = "/recetas/{numTarjetaSanitaria}")
-    public ResponseEntity<List<Receta>> devolverRecetasPaciente(@PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria){
+    @Operation(summary = "Recuperar recetas para un paciente específico",
+            description = "Este endpoint recupera una lista de recetas para el paciente especificado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recuperación exitosa de recetas"),
+            @ApiResponse(responseCode = "204", description = "No se encontraron recetas para el paciente especificado")
+    })
+    public ResponseEntity<List<Receta>> devolverRecetasPaciente(
+            @PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria) {
         List<Receta> recetasPaciente = pacienteServicios.obtenerRecetasPaciente(numTarjetaSanitaria);
-        if (!recetasPaciente.isEmpty()){
-            return new ResponseEntity<>(recetasPaciente, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(recetasPaciente, HttpStatus.NO_CONTENT);
+        return recetasPaciente.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(recetasPaciente, HttpStatus.OK);
     }
+
     @GetMapping(path = "/{id}/perfil")
-    public ResponseEntity<Paciente> perfilPaciente(@PathVariable("id") Long id){
+    @Operation(summary = "Ver perfil del paciente",
+            description = "Este endpoint recupera el perfil de un paciente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recuperación exitosa del perfil del paciente"),
+            @ApiResponse(responseCode = "400", description = "Error al recuperar el perfil del paciente")
+    })
+    public ResponseEntity<Paciente> perfilPaciente(@PathVariable("id") Long id) {
         Paciente pacienteView = pacienteServicios.viewPaciente(id);
-        if (pacienteView != null){
-            return new ResponseEntity<>(pacienteView, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(pacienteView, HttpStatus.BAD_REQUEST);
+        return pacienteView != null
+                ? new ResponseEntity<>(pacienteView, HttpStatus.OK)
+                : new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
+
     @PutMapping(path = "/{id}/perfil")
-    public ResponseEntity<Paciente> perfilPaciente(@PathVariable("id") Long id, @RequestBody Paciente pacienteEditar){
+    @Operation(summary = "Editar perfil del paciente",
+            description = "Este endpoint permite editar el perfil de un paciente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Perfil de paciente editado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Error al editar el perfil del paciente")
+    })
+    public ResponseEntity<Paciente> perfilPaciente(
+            @PathVariable("id") Long id, @RequestBody Paciente pacienteEditar) {
         Paciente pacienteEditado = pacienteServicios.editPaciente(id, pacienteEditar);
-        if (pacienteEditado != null){
-            return new ResponseEntity<>(pacienteEditado, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(pacienteEditado, HttpStatus.BAD_REQUEST);
+        return pacienteEditado != null
+                ? new ResponseEntity<>(pacienteEditado, HttpStatus.OK)
+                : new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 }

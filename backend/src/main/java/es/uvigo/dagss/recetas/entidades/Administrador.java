@@ -15,6 +15,12 @@ public class Administrador extends Usuario {
         super(TipoUsuario.ADMINISTRADOR); 
     }
 
+    public Administrador(String nombre, String email) {
+        super(TipoUsuario.ADMINISTRADOR);
+        this.nombre = nombre;
+        this.email = email;
+    }
+
     public String getNombre() {
         return nombre;
     }
