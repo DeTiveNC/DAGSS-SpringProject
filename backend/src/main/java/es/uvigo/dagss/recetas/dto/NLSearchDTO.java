@@ -1,13 +1,13 @@
 package es.uvigo.dagss.recetas.dto;
 
-public class CentroNLDTO {
+public class NLSearchDTO {
     private String nombre;
     private String localidad;
 
-    public CentroNLDTO() {
+    public NLSearchDTO() {
     }
 
-    public CentroNLDTO(String nombre, String localidad) {
+    public NLSearchDTO(String nombre, String localidad) {
         this.nombre = nombre;
         this.localidad = localidad;
     }

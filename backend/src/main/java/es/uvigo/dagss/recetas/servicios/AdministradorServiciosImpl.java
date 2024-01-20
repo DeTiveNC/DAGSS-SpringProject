@@ -51,7 +51,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Administrador newAdministrador(Administrador administrador){
         List<Administrador> findAllAdmins = administradorRepositorio.findAll();
-        if (!findAllAdmins.contains(administrador)) {
+        if (findAllAdmins.contains(administrador)) {
             return null;
         }
         return administradorRepositorio.save(administrador);
@@ -84,7 +84,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public CentroDeSalud newCentroDeSalud(CentroDeSalud centroDeSalud){
         List<CentroDeSalud> findAllCentro = centroDeSaludRepositorio.findAll();
-        if (!findAllCentro.contains(centroDeSalud)) {
+        if (findAllCentro.contains(centroDeSalud)) {
             return null;
         }
         return centroDeSaludRepositorio.save(centroDeSalud);
@@ -118,7 +118,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Medico newMedicoA(Medico medico){
         List<Medico> findAllMedico = medicoRepositorio.findAll();
-        if (!findAllMedico.contains(medico)) {
+        if (findAllMedico.contains(medico)) {
             return null;
         }
         return medicoRepositorio.save(medico);
@@ -157,7 +157,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Paciente newPaciente(Paciente paciente){
         List<Paciente> findAllPaciente = pacienteRepositorio.findAll();
-        if (!findAllPaciente.contains(paciente)) {
+        if (findAllPaciente.contains(paciente)) {
             return null;
         }
         return pacienteRepositorio.save(paciente);
@@ -190,7 +190,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Farmacia newFarmacia(Farmacia farmacia){
         List<Farmacia> findAllFarmacia = farmaciaRepositorio.findAll();
-        if (!findAllFarmacia.contains(farmacia)) {
+        if (findAllFarmacia.contains(farmacia)) {
             return null;
         }
         return farmaciaRepositorio.save(farmacia);
@@ -201,7 +201,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     }
     @Override
     public List<Cita> findCitasByFechayMedicooPaciente(String numColegiado, String numTarjetaSanitaria){
-        return citaRepositorio.findCitasByMedicoAndPaciente(medicoRepositorio.findMedicoByNumeroColegiado(numColegiado).get().getNombre(), pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria).get().getNombre());
+        return citaRepositorio.findCitasByMedicoAndPaciente(medicoRepositorio.findMedicoByNumeroColegiado(numColegiado).get().getNombre(),numTarjetaSanitaria);
     }
     @Override
     public Cita anularCitaA(Long id, Cita cita){
@@ -249,7 +249,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Medicamento newMedicamento(Medicamento medicamento){
         List<Medicamento> findAllMedicamento = medicamentoRepositorio.findAll();
-        if (!findAllMedicamento.contains(medicamento)) {
+        if (findAllMedicamento.contains(medicamento)) {
             return null;
         }
         return medicamentoRepositorio.save(medicamento);
