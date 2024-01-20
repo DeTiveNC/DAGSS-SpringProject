@@ -85,7 +85,7 @@ public class PacienteControlador {
                 : new ResponseEntity<>(recetasPaciente, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/{id}/perfil")
+    @GetMapping(path = "/{id}")
     @Operation(summary = "Ver perfil del paciente",
             description = "Este endpoint recupera el perfil de un paciente.")
     @ApiResponses(value = {
@@ -99,7 +99,7 @@ public class PacienteControlador {
                 : new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
-    @PutMapping(path = "/{id}/perfil")
+    @PutMapping(path = "/{id}")
     @Operation(summary = "Editar perfil del paciente",
             description = "Este endpoint permite editar el perfil de un paciente.")
     @ApiResponses(value = {

@@ -154,4 +154,17 @@ public abstract class Usuario implements Serializable {
 		return Objects.equals(fechaAlta, other.fechaAlta)
 				&& Objects.equals(login, other.login);
 	}
+
+	@Override
+	public String toString() {
+		return "Usuario{" +
+				"id=" + id +
+				", tipo=" + tipo +
+				", login='" + login + '\'' +
+				", password='" + password + '\'' +
+				", fechaAlta=" + fechaAlta +
+				", ultimoAcceso=" + ultimoAcceso +
+				", activo=" + activo +
+				'}';
+	}
 }

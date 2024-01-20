@@ -17,24 +17,20 @@ public class Medico extends Usuario {
     private String dni;
     private String numeroColegiado;
     private String telefono;
-    @OneToMany(mappedBy = "medico", fetch = FetchType.EAGER)
-    private List<Cita> citas;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "centro_medico")
     private CentroDeSalud centroDeSalud;
 
     public Medico() {
         super(TipoUsuario.MEDICO);
-        this.citas = new ArrayList<>();
     }
-    public Medico(String nombre, String apellidos, String dni, String numeroColegiado, String telefono, List<Cita> citas, CentroDeSalud centroDeSalud) {
+    public Medico(String nombre, String apellidos, String dni, String numeroColegiado, String telefono, CentroDeSalud centroDeSalud) {
         super(TipoUsuario.MEDICO);
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;
         this.numeroColegiado = numeroColegiado;
         this.telefono = telefono;
-        this.citas = citas;
         this.centroDeSalud = centroDeSalud;
     }
 
@@ -85,13 +81,4 @@ public class Medico extends Usuario {
     public void setCentroDeSalud(CentroDeSalud centroDeSalud) {
         this.centroDeSalud = centroDeSalud;
     }
-
-    public List<Cita> getCitas() {
-        return citas;
-    }
-
-    public void setCitas(List<Cita> citas) {
-        this.citas = citas;
-    }
-
 }

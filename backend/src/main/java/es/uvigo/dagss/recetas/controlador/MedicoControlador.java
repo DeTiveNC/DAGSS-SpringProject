@@ -3,7 +3,6 @@ package es.uvigo.dagss.recetas.controlador;
 import es.uvigo.dagss.recetas.dto.CrearPrescripcionDTO;
 import es.uvigo.dagss.recetas.dto.MedicamentoBusqDTO;
 import es.uvigo.dagss.recetas.dto.MedicoCitaDTO;
-import es.uvigo.dagss.recetas.dto.NewCitaPacienteDTO;
 import es.uvigo.dagss.recetas.entidades.Cita;
 import es.uvigo.dagss.recetas.entidades.Medicamento;
 import es.uvigo.dagss.recetas.entidades.Medico;
@@ -13,6 +12,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +43,7 @@ public class MedicoControlador {
                 : new ResponseEntity<>(citasDispo, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/{numTarjetaSanitaria}/ausencia")
+    @PutMapping(path = "/citas/{numTarjetaSanitaria}")
     @Operation(summary = "Registrar ausencia de un paciente",
             description = "Este endpoint registra la ausencia de un paciente para el médico especificado.")
     @ApiResponses(value = {
@@ -60,20 +60,20 @@ public class MedicoControlador {
 
     @GetMapping(path = "/cita-actual/{numColegiado}")
     @Operation(summary = "Devolver cita actual del médico",
-            description = "Este endpoint devuelve la cita actual para el médico y paciente especificados.")
+            description = "Este endpoint devuelve la cita actual para el médico y paciente especificados. (Swagger no funciona correctamente en este endpoint)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recuperación exitosa de la cita actual"),
             @ApiResponse(responseCode = "204", description = "No se encontró cita actual para el médico y paciente especificados")
     })
     public ResponseEntity<Cita> devolverCitaActual(
-            @PathVariable("numColegiado") String numColegiado, @RequestBody MedicoCitaDTO newCitaPacienteDTO) {
-        Cita citaActual = medicoServicios.devolverCitaActual(numColegiado, newCitaPacienteDTO.getFecha(), newCitaPacienteDTO.getHora());
+            @PathVariable("numColegiado") String numColegiado, @Valid @RequestBody MedicoCitaDTO citaMedicoActual) {
+        Cita citaActual = medicoServicios.devolverCitaActual(numColegiado, citaMedicoActual.getFecha(), citaMedicoActual.getHora());
         return citaActual != null
                 ? new ResponseEntity<>(citaActual, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "/{numTarjetaSanitaria}/anular")
+    @PutMapping(path = "/anular/{numTarjetaSanitaria}")
     @Operation(summary = "Anular cita de un paciente",
             description = "Este endpoint anula una cita para el paciente especificado.")
     @ApiResponses(value = {
@@ -88,7 +88,7 @@ public class MedicoControlador {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "/{numTarjetaSanitaria}/completar")
+    @PutMapping(path = "/completar/{numTarjetaSanitaria}")
     @Operation(summary = "Completar cita de un paciente",
             description = "Este endpoint marca una cita como completada para el paciente especificado.")
     @ApiResponses(value = {
@@ -109,12 +109,13 @@ public class MedicoControlador {
             @ApiResponse(responseCode = "200", description = "Recuperación exitosa de medicamentos"),
             @ApiResponse(responseCode = "204", description = "No se encontraron medicamentos según los parámetros de búsqueda")
     })
-    public ResponseEntity<List<Medicamento>> devolverMedicamentos(@RequestBody MedicamentoBusqDTO medicamentoBusqDTO) {
+    public ResponseEntity<List<Medicamento>> devolverMedicamentos(@ModelAttribute MedicamentoBusqDTO medicamentoBusqDTO) {
         List<Medicamento> medicamentos = medicoServicios.devolverMedicamentos(
                 medicamentoBusqDTO.getNombreComercial(),
+                medicamentoBusqDTO.getPrincipioActivo(),
                 medicamentoBusqDTO.getFabricante(),
-                medicamentoBusqDTO.getFamilia(),
-                medicamentoBusqDTO.getPrincipioActivo());
+                medicamentoBusqDTO.getFamilia());
+        System.out.println(medicamentoBusqDTO);
         return medicamentos.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(medicamentos, HttpStatus.OK);
@@ -140,7 +141,7 @@ public class MedicoControlador {
                 : new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
-    @GetMapping(path = "/{id}/perfil")
+    @GetMapping(path = "/{id}")
     @Operation(summary = "Ver perfil del médico",
             description = "Este endpoint recupera el perfil de un médico.")
     @ApiResponses(value = {
@@ -154,7 +155,7 @@ public class MedicoControlador {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "/{id}/perfil")
+    @PutMapping(path = "/{id}")
     @Operation(summary = "Editar perfil del médico",
             description = "Este endpoint permite editar el perfil de un médico.")
     @ApiResponses(value = {

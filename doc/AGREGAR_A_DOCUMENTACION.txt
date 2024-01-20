@@ -1,0 +1,4 @@
+Ciclo de vida JPA
+	- El hijo de puta del EntityManager maneja entidades sobre la @id en este caso si hay valores con id iguales por ser
+	venidos de un padre el cual se genera por tablas cada uno de los ids. El cabron piensa que es la misma id del principio
+	por problema de cache

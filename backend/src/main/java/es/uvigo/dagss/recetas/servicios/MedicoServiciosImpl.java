@@ -2,14 +2,12 @@ package es.uvigo.dagss.recetas.servicios;
 
 import es.uvigo.dagss.recetas.entidades.*;
 import es.uvigo.dagss.recetas.repositorios.*;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +18,8 @@ import java.util.*;
 @Service
 public class MedicoServiciosImpl implements MedicoServicios{
     private final int maxCajas=1;
+    @Autowired
+    private EntityManager entityManager;
     @Autowired
     private CitaRepositorio citaRepositorio;
     @Autowired
@@ -86,14 +86,17 @@ public class MedicoServiciosImpl implements MedicoServicios{
     @Override
     public Prescripcion crearPrescripcionMedico(Medicamento medicamento, String numColegiado, String numTarjetaSanitaria, Double dosis, String indicaciones, Date fechFinPres) {
         TipoEstado estadoActivo = TipoEstado.ACTIVO;
-        Optional<Medico> medicoOptional= medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        Optional<Medico> medicoOptional = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        entityManager.clear(); // Esto se agrego para borrar cache por problemas con las entidades de misma id
+        if(medicoOptional.isEmpty()){
+            return null;
+        }
         Optional<Paciente> pacienteOptional= pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
-        if((!medicoOptional.isPresent()) || (!pacienteOptional.isPresent())){
+        if(pacienteOptional.isEmpty()){
             return null;
         }
         Medico medico=medicoOptional.get();
         Paciente paciente= pacienteOptional.get();
-
         Prescripcion prescripcion = new Prescripcion(medicamento, medico, paciente, dosis, indicaciones, new Date(new java.util.Date().getTime()) , fechFinPres, estadoActivo);
         prescripcion = prescripcionRepositorio.save(prescripcion);
         generarRecetas(prescripcion, this.maxCajas);
@@ -123,7 +126,7 @@ public class MedicoServiciosImpl implements MedicoServicios{
     public Medico editMedico(Long id, Medico editMedico) {
         Optional<Medico> medicoBusq = medicoRepositorio.findById(id);
         if (medicoBusq.isPresent() && medicoBusq.get().equals(editMedico)){
-            medicoRepositorio.save(editMedico);
+            return medicoRepositorio.save(editMedico);
         }
         return null;
     }

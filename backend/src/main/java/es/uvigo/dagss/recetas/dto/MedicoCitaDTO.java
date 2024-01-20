@@ -1,13 +1,17 @@
 package es.uvigo.dagss.recetas.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.sql.Date;
 import java.sql.Time;
 
 public class MedicoCitaDTO {
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date fecha;
+    @JsonFormat(pattern = "HH:mm:ss")
     private Time hora;
 
-    public MedicoCitaDTO(String numColegiado, Date fecha, Time hora) {
+    public MedicoCitaDTO(Date fecha, Time hora) {
         this.fecha = fecha;
         this.hora = hora;
     }

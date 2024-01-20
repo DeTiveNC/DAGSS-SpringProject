@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
-@IdClass(Receta.class)
+@IdClass(RecetaId.class)
 public class Receta implements Serializable {
     @Id
     @JoinColumn(name = "prescripcion_id")

@@ -22,7 +22,7 @@ public class FarmaciaControlador {
     @Autowired
     private FarmaciaServicios farmaciaServicios;
 
-    @GetMapping(path = "/{numTarjetaSanitaria}")
+    @GetMapping(path = "/recetas/{numTarjetaSanitaria}")
     @Operation(summary = "Recuperar recetas para un paciente específico",
             description = "Este endpoint recupera una lista de recetas para el paciente especificado.")
     @ApiResponses(value = {
@@ -53,7 +53,7 @@ public class FarmaciaControlador {
                 : new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "/{id}/perfil")
+    @PutMapping(path = "/{id}")
     @Operation(summary = "Editar perfil de la farmacia",
             description = "Este endpoint permite editar el perfil de una farmacia.")
     @ApiResponses(value = {
@@ -67,7 +67,7 @@ public class FarmaciaControlador {
                 : new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(path = "/{id}/perfil")
+    @GetMapping(path = "/{id}")
     @Operation(summary = "Ver perfil de la farmacia",
             description = "Este endpoint recupera el perfil de una farmacia.")
     @ApiResponses(value = {

@@ -93,7 +93,7 @@ public class PacienteServiciosImpl implements PacienteServicios{
     public Paciente editPaciente(Long id,Paciente editPaciente) {
         Optional<Paciente> pacientoBusq = pacienteRepositorio.findById(id);
         if (pacientoBusq.isPresent() && pacientoBusq.get().equals(editPaciente)){
-            pacienteRepositorio.save(editPaciente);
+            return pacienteRepositorio.save(editPaciente);
         }
         return null;
     }
