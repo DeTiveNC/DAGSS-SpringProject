@@ -34,10 +34,8 @@ public class MedicoServiciosImpl implements MedicoServicios{
     private MedicamentoRepositorio medicamentoRepositorio;
     @Override
     public List<Cita> devolverCitasMedico(String login) {
-        if (medicoRepositorio.findMedicoByLogin(login).isPresent()){
-            return citaRepositorio.findCitasByMedico(medicoRepositorio.findMedicoByLogin(login).get());
-        }
-        return null;
+        Optional<Medico> medicoBusq = medicoRepositorio.findMedicoByLogin(login);
+        return medicoBusq.map(medico -> citaRepositorio.findCitasByMedico(medico)).orElse(null);
     }
 
     @Override
