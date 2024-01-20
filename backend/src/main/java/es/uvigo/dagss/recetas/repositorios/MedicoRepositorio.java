@@ -16,4 +16,5 @@ public interface MedicoRepositorio extends JpaRepository<Medico, Long> {
     List<Medico> findMedicosByCentroDeSaludNombre(String nombre);
     Optional<Medico> findMedicoByLogin(String login);
     Optional<Medico> findMedicoByNumeroColegiado(String numColegiado);
+    Medico findMedicoById(Long id);
 }
