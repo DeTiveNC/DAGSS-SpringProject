@@ -4,11 +4,10 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class NewCitaPacienteDTO {
-    private String numColegiado;
     private Date fecha;
     private Time hora;
 
-    public NewCitaPacienteDTO(String numColegiado, Date fecha, Time hora) {
+    public NewCitaPacienteDTO( Date fecha, Time hora) {
         this.fecha = fecha;
         this.hora = hora;
     }
@@ -30,13 +29,4 @@ public class NewCitaPacienteDTO {
     public void setHora(Time hora) {
         this.hora = hora;
     }
-
-    public String getNumColegiado() {
-        return numColegiado;
-    }
-
-    public void setNumColegiado(String numColegiado) {
-        this.numColegiado = numColegiado;
-    }
-
 }

@@ -12,7 +12,7 @@ import java.util.List;
 public interface PacienteServicios {
     List<Cita> devolverCitasPaciente(String numTarjetaSanitaria);
     Cita anularCitaPaciente(String numTarjetaSanitaria,Cita citaAnular);
-    Cita crearCitaPaciente(Long id, String numColegiado, Date fecha, Time hora);
+    Cita crearCitaPaciente(Long id, Date fecha, Time hora);
     List<Receta> obtenerRecetasPaciente(String numTarjetaSanitaria);
     List<Prescripcion> devolverPrescripcionPacientes(String numTarjetaSanitaria);
     Paciente viewPaciente(Long id);

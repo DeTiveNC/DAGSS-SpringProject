@@ -63,7 +63,7 @@ public class PacienteControlador {
     })
     public ResponseEntity<Cita> crearCitaPaciente(
             @PathVariable("id") Long id, @RequestBody NewCitaPacienteDTO citaPaciente) {
-        Cita newCitaPaciente = pacienteServicios.crearCitaPaciente(id, citaPaciente.getNumColegiado(),
+        Cita newCitaPaciente = pacienteServicios.crearCitaPaciente(id,
                 citaPaciente.getFecha(), citaPaciente.getHora());
         return newCitaPaciente != null
                 ? new ResponseEntity<>(newCitaPaciente, HttpStatus.OK)

@@ -25,10 +25,10 @@ public class Paciente extends Usuario {
     private String telefono;
     private String email;
     private Date fechaNacimiento;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "centro_salud")
     private CentroDeSalud centroDeSalud;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "medico_asig")
     private Medico medico;
 

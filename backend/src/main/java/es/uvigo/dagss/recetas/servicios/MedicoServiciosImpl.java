@@ -19,6 +19,7 @@ import java.util.*;
 
 @Service
 public class MedicoServiciosImpl implements MedicoServicios{
+    private final int maxCajas=1;
     @Autowired
     private CitaRepositorio citaRepositorio;
     @Autowired
@@ -97,19 +98,19 @@ public class MedicoServiciosImpl implements MedicoServicios{
 
         Prescripcion prescripcion = new Prescripcion(medicamento, medico, paciente, dosis, indicaciones, new Date(new java.util.Date().getTime()) , fechFinPres, estadoActivo);
         prescripcion = prescripcionRepositorio.save(prescripcion);
-        generarRecetas(prescripcion);
+        generarRecetas(prescripcion, this.maxCajas);
         return prescripcion;
     }
 
-    private void generarRecetas(Prescripcion prescripcion){
+    private void generarRecetas(Prescripcion prescripcion, int maxCajasPerRecipe){
         long intervalo= ChronoUnit.DAYS.between(prescripcion.getFechInPres().toLocalDate(),prescripcion.getFechFinPres().toLocalDate());
         Double totaldosis = prescripcion.getDosis()*(intervalo);
-        int ncajas =   (int) (Math.ceil(totaldosis / prescripcion.getMedicamento().getNumDosis()));
+        int ncajas =   (int) (Math.ceil(totaldosis / (prescripcion.getMedicamento().getNumDosis()*maxCajasPerRecipe)));
         TipoEstado estadoPlanificada = TipoEstado.PLANIFICADA;
         for(long i=0;i<ncajas;i++){
             Date startDate=Date.valueOf(prescripcion.getFechInPres().toLocalDate().plusDays((i)*intervalo/ncajas));
             Date endDate=Date.valueOf(prescripcion.getFechInPres().toLocalDate().plusDays((i+1)*intervalo/ncajas));
-            Receta receta= new Receta(prescripcion, i+1, startDate , endDate, 1, estadoPlanificada, null);
+            Receta receta= new Receta(prescripcion, i+1, startDate , endDate, maxCajasPerRecipe, estadoPlanificada, null);
             recetaRepositorio.save(receta);
         }
     }

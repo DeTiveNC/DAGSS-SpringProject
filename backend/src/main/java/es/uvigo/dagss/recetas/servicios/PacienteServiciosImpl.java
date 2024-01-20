@@ -26,7 +26,12 @@ public class PacienteServiciosImpl implements PacienteServicios{
     private MedicoServiciosImpl medicoServicios;
     @Override
     public List<Cita> devolverCitasPaciente(String numTarjetaSanitaria) {
-        return citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
+        List<Cita> citas= citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
+        for(Cita cambios:citas){
+            cambios.setMedico(medicoRepositorio.findById(cambios.getMedico().getId()).get());
+            cambios.setPaciente(pacienteRepositorio.findById(cambios.getPaciente().getId()).get());
+        }
+        return citas;
     }
 
     @Override
@@ -41,20 +46,24 @@ public class PacienteServiciosImpl implements PacienteServicios{
     }
 
     @Override
-    public Cita crearCitaPaciente(Long id, String numColegiado, Date fecha, Time horaCita) {
+    public Cita crearCitaPaciente(Long id, Date fecha, Time horaCita) {
         Cita newCita = new Cita();
         TipoEstado citaEstadoCreacion = TipoEstado.PLANIFICADA;
         Float duracionCitaDefault = (float) 15;
-        Optional<Medico> medicoCita = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
         Optional<Paciente> pacienteCreadorCita = pacienteRepositorio.findById(id);
-        if (fecha != null && horaCita != null){
-            List<Time> tiempoOcupadoMedico = medicoServicios.tiempoCitasOcupadas(numColegiado, fecha);
+        if(!pacienteCreadorCita.isPresent()){
+            return null;
+        }
+        Paciente paciente= pacienteCreadorCita.get();;
+        Medico medico=paciente.getMedico();
+        if (fecha != null && horaCita != null&&medico!=null){
+            List<Time> tiempoOcupadoMedico = medicoServicios.tiempoCitasOcupadas(medico.getNumeroColegiado(), fecha);
             boolean contains = tiempoOcupadoMedico.contains(horaCita);
-            if (!contains && medicoCita.isPresent() && pacienteCreadorCita.isPresent()){
+            if (!contains){
                 newCita.setEstado(citaEstadoCreacion);
                 newCita.setDuracion(duracionCitaDefault);
-                newCita.setMedico(medicoCita.get());
-                newCita.setPaciente(pacienteCreadorCita.get());
+                newCita.setMedico(medico);
+                newCita.setPaciente(paciente);
                 newCita.setFecha(fecha);
                 newCita.setHora(horaCita);
                 return citaRepositorio.save(newCita);
