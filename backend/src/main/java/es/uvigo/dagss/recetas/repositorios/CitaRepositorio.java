@@ -13,7 +13,7 @@ import java.util.List;
 
 @Repository
 public interface CitaRepositorio extends JpaRepository<Cita, Long> {
-    @Query("SELECT c FROM Cita c where (:term is null or c.medico.nombre like lower(concat('%',:term,'%'))) AND (:term2 is null or c.paciente.numTarjetaSanitaria like lower(concat('%',:term2,'%')))")
+    @Query("SELECT c FROM Cita c where (:term is null or c.medico.numeroColegiado like lower(concat('%',:term,'%'))) AND (:term2 is null or c.paciente.numTarjetaSanitaria like lower(concat('%',:term2,'%')))")
     List<Cita> findCitasByMedicoAndPaciente(@Param("term") String term, @Param("term2") String term2);
     @Query("select c from Cita c where c.paciente.numTarjetaSanitaria like lower(concat('%', :term, '%')) and c.estado = 'PLANIFICADA' ")
     List<Cita> findCitasByPacienteAndEstado(@Param("term") String term);

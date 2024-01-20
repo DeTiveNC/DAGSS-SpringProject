@@ -201,7 +201,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     }
     @Override
     public List<Cita> findCitasByFechayMedicooPaciente(String numColegiado, String numTarjetaSanitaria){
-        return citaRepositorio.findCitasByMedicoAndPaciente(medicoRepositorio.findMedicoByNumeroColegiado(numColegiado).get().getNombre(),numTarjetaSanitaria);
+        return citaRepositorio.findCitasByMedicoAndPaciente(numColegiado,numTarjetaSanitaria);
     }
     @Override
     public Cita anularCitaA(Long id, Cita cita){
