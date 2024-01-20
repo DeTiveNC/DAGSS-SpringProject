@@ -38,4 +38,5 @@ public class NewCitaPacienteDTO {
     public void setNumColegiado(String numColegiado) {
         this.numColegiado = numColegiado;
     }
+
 }

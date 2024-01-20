@@ -2,6 +2,7 @@ package es.uvigo.dagss.recetas.controlador;
 
 import es.uvigo.dagss.recetas.dto.CrearPrescripcionDTO;
 import es.uvigo.dagss.recetas.dto.MedicamentoBusqDTO;
+import es.uvigo.dagss.recetas.dto.MedicoCitaDTO;
 import es.uvigo.dagss.recetas.dto.NewCitaPacienteDTO;
 import es.uvigo.dagss.recetas.entidades.Cita;
 import es.uvigo.dagss.recetas.entidades.Medicamento;
@@ -27,7 +28,7 @@ public class MedicoControlador {
     @Autowired
     private MedicoServicios medicoServicios;
 
-    @GetMapping(path = "/{login}")
+    @GetMapping(path = "/citas/{login}")
     @Operation(summary = "Devolver citas de un médico",
             description = "Este endpoint devuelve la lista de citas para el médico especificado.")
     @ApiResponses(value = {
@@ -38,7 +39,7 @@ public class MedicoControlador {
             @PathVariable("login") String login) {
         List<Cita> citasDispo = medicoServicios.devolverCitasMedico(login);
         return citasDispo.isEmpty()
-                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                ? new ResponseEntity<>(citasDispo,HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(citasDispo, HttpStatus.OK);
     }
 
@@ -57,7 +58,7 @@ public class MedicoControlador {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping(path = "/{numColegiado}")
+    @GetMapping(path = "/cita-actual/{numColegiado}")
     @Operation(summary = "Devolver cita actual del médico",
             description = "Este endpoint devuelve la cita actual para el médico y paciente especificados.")
     @ApiResponses(value = {
@@ -65,7 +66,7 @@ public class MedicoControlador {
             @ApiResponse(responseCode = "204", description = "No se encontró cita actual para el médico y paciente especificados")
     })
     public ResponseEntity<Cita> devolverCitaActual(
-            @PathVariable("numColegiado") String numColegiado, @RequestBody NewCitaPacienteDTO newCitaPacienteDTO) {
+            @PathVariable("numColegiado") String numColegiado, @RequestBody MedicoCitaDTO newCitaPacienteDTO) {
         Cita citaActual = medicoServicios.devolverCitaActual(numColegiado, newCitaPacienteDTO.getFecha(), newCitaPacienteDTO.getHora());
         return citaActual != null
                 ? new ResponseEntity<>(citaActual, HttpStatus.OK)
