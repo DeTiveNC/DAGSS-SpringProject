@@ -9,5 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface AdministradorRepositorio extends JpaRepository<Administrador, Long> {
-    Administrador findAdministradorByLogin(String login);
 }

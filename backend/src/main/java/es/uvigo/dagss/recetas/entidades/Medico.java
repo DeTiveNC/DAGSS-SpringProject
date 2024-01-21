@@ -12,6 +12,10 @@ import jakarta.persistence.*;
 public class Medico extends Usuario {
 
     // Anadir atributos propios
+    @TableGenerator(name = "MEDICO_GEN", table = "MEDICO_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "MEDICO_GEN")
+    @Id
+    private Long id;
     private String nombre;
     private String apellidos;
     private String dni;
@@ -32,6 +36,16 @@ public class Medico extends Usuario {
         this.numeroColegiado = numeroColegiado;
         this.telefono = telefono;
         this.centroDeSalud = centroDeSalud;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {

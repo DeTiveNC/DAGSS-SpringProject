@@ -2,7 +2,6 @@ package es.uvigo.dagss.recetas.servicios;
 
 import es.uvigo.dagss.recetas.entidades.*;
 import es.uvigo.dagss.recetas.repositorios.*;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +17,6 @@ import java.util.*;
 @Service
 public class MedicoServiciosImpl implements MedicoServicios{
     private final int maxCajas=1;
-    @Autowired
-    private EntityManager entityManager;
     @Autowired
     private CitaRepositorio citaRepositorio;
     @Autowired
@@ -87,7 +84,6 @@ public class MedicoServiciosImpl implements MedicoServicios{
     public Prescripcion crearPrescripcionMedico(Medicamento medicamento, String numColegiado, String numTarjetaSanitaria, Double dosis, String indicaciones, Date fechFinPres) {
         TipoEstado estadoActivo = TipoEstado.ACTIVO;
         Optional<Medico> medicoOptional = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
-        entityManager.clear(); // Esto se agrego para borrar cache por problemas con las entidades de misma id
         if(medicoOptional.isEmpty()){
             return null;
         }

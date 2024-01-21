@@ -13,5 +13,4 @@ import java.util.Optional;
 public interface FarmaciaRepositorio extends JpaRepository<Farmacia, Long> {
     @Query("Select f from Farmacia f where (:term is null or f.nombreEstablecimiento like lower(concat('%',:term,'%'))) AND (:term2 is null or f.direccion.localidad like lower(concat('%',:term2,'%')))")
     List<Farmacia> findFarmaciasByNombreEstablecimientoAndDireccionLocalidad(@Param("term") String term, @Param("term2") String term2);
-    Optional<Farmacia> findFarmaciaByLogin(String login);
 }

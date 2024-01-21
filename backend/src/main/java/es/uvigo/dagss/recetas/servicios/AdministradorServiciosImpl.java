@@ -3,6 +3,7 @@ package es.uvigo.dagss.recetas.servicios;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import es.uvigo.dagss.recetas.entidades.*;
 import es.uvigo.dagss.recetas.repositorios.*;
@@ -34,8 +35,8 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Administrador editAdministrador(Long id, Administrador editAdministrador){
         Optional<Administrador> administradorBusq = administradorRepositorio.findById(id);
-        if (administradorBusq.isPresent() && administradorBusq.get().equals(editAdministrador)){
-                return administradorRepositorio.save(editAdministrador);
+        if (administradorBusq.isPresent() && administradorBusq.get().getId().equals(editAdministrador.getId())){
+            return administradorRepositorio.save(editAdministrador);
         }
         return null;
     }
@@ -54,6 +55,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         if (findAllAdmins.contains(administrador)) {
             return null;
         }
+        administrador.setPassword("123456789");
         return administradorRepositorio.save(administrador);
     }
     @Override
@@ -67,8 +69,8 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public CentroDeSalud editCentroDeSalud(String nombreCentro, CentroDeSalud centroDeSalud){
         Optional<CentroDeSalud> centroDeSaludBusq = centroDeSaludRepositorio.findCentroDeSaludByNombre(nombreCentro);
-        if (centroDeSaludBusq.isPresent() && centroDeSaludBusq.get().equals(centroDeSalud)){
-                return centroDeSaludRepositorio.save(centroDeSalud);
+        if (centroDeSaludBusq.isPresent() && centroDeSaludBusq.get().getNombre().equals(centroDeSalud.getNombre())){
+            return centroDeSaludRepositorio.save(centroDeSalud);
         }
         return null;
     }
@@ -100,8 +102,8 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Medico editMedico(Long id, Medico medico){
         Optional<Medico> medicoBusq = medicoRepositorio.findById(id);
-        if (medicoBusq.isPresent() && medicoBusq.get().equals(medico)){
-                medicoRepositorio.save(medico);
+        if (medicoBusq.isPresent() && medicoBusq.get().getId().equals(medico.getId())){
+            return medicoRepositorio.save(medico);
         }
         return null;
     }
@@ -121,6 +123,10 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         if (findAllMedico.contains(medico)) {
             return null;
         }
+        Random RMD = new Random();
+        medico.setPassword(medico.getNumeroColegiado());
+        List<CentroDeSalud> centroDeSaludRMD = centroDeSaludRepositorio.findAll();
+        medico.setCentroDeSalud(centroDeSaludRMD.get(RMD.nextInt(centroDeSaludRMD.size())));
         return medicoRepositorio.save(medico);
     }
     @Override
@@ -140,8 +146,8 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Paciente editPacienteA(Long id, Paciente paciente){
         Optional<Paciente> pacienteBusq = pacienteRepositorio.findById(id);
-        if (pacienteBusq.isPresent() && pacienteBusq.get().equals(paciente)){
-            pacienteRepositorio.save(paciente);
+        if (pacienteBusq.isPresent() && pacienteBusq.get().getId().equals(paciente.getId())){
+            return pacienteRepositorio.save(paciente);
         }
         return null;
     }
@@ -160,6 +166,12 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         if (findAllPaciente.contains(paciente)) {
             return null;
         }
+        Random rmd = new Random();
+        List<CentroDeSalud> centroDeSaludEscogido = centroDeSaludRepositorio.findCentroDeSaludsByNombreAndDireccion(null, paciente.getDireccion().getLocalidad());
+        CentroDeSalud CentroSaludRMD = centroDeSaludEscogido.get(rmd.nextInt(centroDeSaludEscogido.size()));
+        List<Medico> medicoEscogido = medicoRepositorio.findMedicosByNombreAndCentroDeSaludDireccionLocalidad(null, CentroSaludRMD.getDireccion().getLocalidad());
+        paciente.setMedico(medicoEscogido.get(rmd.nextInt(medicoEscogido.size())));
+        paciente.setCentroDeSalud(CentroSaludRMD);
         return pacienteRepositorio.save(paciente);
     }
     @Override
@@ -173,8 +185,8 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Farmacia editFarmaciaA(Long id, Farmacia editFarmacia){
         Optional<Farmacia> farmaciaBusq = farmaciaRepositorio.findById(id);
-        if (farmaciaBusq.isPresent() && farmaciaBusq.get().equals(editFarmacia)){
-            farmaciaRepositorio.save(editFarmacia);
+        if (farmaciaBusq.isPresent() && farmaciaBusq.get().getId().equals(editFarmacia.getId())){
+            return farmaciaRepositorio.save(editFarmacia);
         }
         return null;
     }
@@ -193,6 +205,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         if (findAllFarmacia.contains(farmacia)) {
             return null;
         }
+        farmacia.setPassword(farmacia.getNumColegiado());
         return farmaciaRepositorio.save(farmacia);
     }
     @Override
@@ -232,7 +245,7 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
     @Override
     public Medicamento editMedicamento(String nombreComercial, Medicamento medicamento){
         Optional<Medicamento> medicamentoBusq = medicamentoRepositorio.findById(nombreComercial);
-        if (medicamentoBusq.isPresent() && medicamentoBusq.get().equals(medicamento)){
+        if (medicamentoBusq.isPresent() && medicamentoBusq.get().getNombreComercial().equals(medicamento.getNombreComercial())){
             return medicamentoRepositorio.save(medicamento);
         }
         return null;

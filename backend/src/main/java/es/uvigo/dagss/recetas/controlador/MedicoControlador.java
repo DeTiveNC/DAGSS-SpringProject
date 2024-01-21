@@ -60,7 +60,7 @@ public class MedicoControlador {
 
     @GetMapping(path = "/cita-actual/{numColegiado}")
     @Operation(summary = "Devolver cita actual del médico",
-            description = "Este endpoint devuelve la cita actual para el médico y paciente especificados. (Swagger no funciona correctamente en este endpoint)")
+            description = "Este endpoint devuelve la cita actual para el médico y paciente especificados.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recuperación exitosa de la cita actual"),
             @ApiResponse(responseCode = "204", description = "No se encontró cita actual para el médico y paciente especificados")

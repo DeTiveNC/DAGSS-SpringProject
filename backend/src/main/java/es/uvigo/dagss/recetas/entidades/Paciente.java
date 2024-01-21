@@ -13,12 +13,14 @@ import jakarta.persistence.*;
 public class Paciente extends Usuario {
 
 	// Anadir atributos propios
+    @TableGenerator(name = "PACIENTE_GEN", table = "PACIENTE_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "PACIENTE_GEN")
+    @Id
+    private Long id;
     private String nombre;
     private String apellidos;
-    @JsonIgnore
     private String dni;
     private String numTarjetaSanitaria;
-    @JsonIgnore
     private String numSeguridadSocial;
     @Embedded
     private Direccion direccion;
@@ -50,6 +52,16 @@ public class Paciente extends Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.centroDeSalud = centroDeSalud;
         this.medico = medico;
+    }
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getNombre() {

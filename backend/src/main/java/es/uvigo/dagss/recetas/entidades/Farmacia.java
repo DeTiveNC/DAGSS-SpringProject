@@ -10,6 +10,10 @@ import java.util.List;
 public class Farmacia extends Usuario {
 
     // Anadir atributos propios
+    @TableGenerator(name = "FARMACIA_GEN", table = "FARMACIA_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "FARMACIA_GEN")
+    @Id
+    private Long id;
 	private String nombreEstablecimiento;
     private String nombreFarmaceutico;
     private String apellidosFarmaceutico;
@@ -33,6 +37,16 @@ public class Farmacia extends Usuario {
         this.telefono = telefono;
         this.email = email;
     }
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 
     public String getNombreEstablecimiento() {
         return nombreEstablecimiento;
