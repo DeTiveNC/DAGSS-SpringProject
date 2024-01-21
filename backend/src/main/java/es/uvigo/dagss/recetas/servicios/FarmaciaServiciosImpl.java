@@ -29,7 +29,7 @@ public class FarmaciaServiciosImpl implements FarmaciaServicios{
     public Receta servirReceta(Long id_farmacia,String numTarjetaSanitaria, Long id_receta, Long id_prescripcion) {
         TipoEstado tipoEstadoServida = TipoEstado.SERVIDA;
         LocalDate localDate = LocalDate.now();
-        Optional<Receta> recetaExtraida = recetaRepositorio.findRecetaByID(id_receta, id_prescripcion);
+        Optional<Receta> recetaExtraida = recetaRepositorio.findRecetaByID(id_receta, id_prescripcion, numTarjetaSanitaria);
         if(!recetaExtraida.isPresent()){
             return null;
         }
