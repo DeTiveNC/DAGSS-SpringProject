@@ -26,12 +26,16 @@ public class FarmaciaServiciosImpl implements FarmaciaServicios{
         return recetaRepositorio.findRecetasByEstado(numTarjetaSanitaria);
     }
     @Override
-    public Receta servirReceta(Long id_farmacia,String numTarjetaSanitaria, Receta receta) {
-        List<Receta> recetaList = recetaRepositorio.findRecetasByEstado(numTarjetaSanitaria);
+    public Receta servirReceta(Long id_farmacia,String numTarjetaSanitaria, Long id_receta, Long id_prescripcion) {
         TipoEstado tipoEstadoServida = TipoEstado.SERVIDA;
         LocalDate localDate = LocalDate.now();
-        Optional<Farmacia> farmaciaServidora = farmaciaRepositorio.findById(id_farmacia);
-        if (recetaList.contains(receta) && localDate.isBefore(receta.getFechFinVal().toLocalDate()) && farmaciaServidora.isPresent()){
+        Optional<Receta> recetaExtraida = recetaRepositorio.findRecetaByID(id_receta, id_prescripcion);
+        if(!recetaExtraida.isPresent()){
+            return null;
+        }
+        Receta receta= recetaExtraida.get();
+        Optional<Farmacia> farmaciaServidora = farmaciaRepositorio.findById(id_farmacia );
+        if (localDate.isBefore(receta.getFechFinVal().toLocalDate()) && farmaciaServidora.isPresent() && receta.getFarmacia()==null){
             receta.setEstado(tipoEstadoServida);
             receta.setFarmacia(farmaciaServidora.get());
             return recetaRepositorio.save(receta);

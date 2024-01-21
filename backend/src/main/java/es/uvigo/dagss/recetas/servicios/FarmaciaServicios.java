@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FarmaciaServicios {
     List<Receta> busquedaRecetaPaciente(String numTarjetaSanitaria);
-    Receta servirReceta(Long id_farmacia, String numTarjetaSanitaria, Receta receta);
+    Receta servirReceta(Long id_farmacia, String numTarjetaSanitaria, Long id_receta, Long id_prescripcion);
     Farmacia editFarmacia(Long id,Farmacia editFarmacia);
     Farmacia viewFarmacia(Long id);
 }

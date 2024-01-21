@@ -1,5 +1,6 @@
 package es.uvigo.dagss.recetas.controlador;
 
+import es.uvigo.dagss.recetas.dto.PKRecetasDTO;
 import es.uvigo.dagss.recetas.entidades.Farmacia;
 import es.uvigo.dagss.recetas.entidades.Receta;
 import es.uvigo.dagss.recetas.servicios.FarmaciaServicios;
@@ -46,8 +47,8 @@ public class FarmaciaControlador {
     })
     public ResponseEntity<Receta> servirRecetaPaciente(
             @PathVariable("id") Long id, @PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria,
-            @RequestBody Receta receta) {
-        Receta recetaAcrear = farmaciaServicios.servirReceta(id, numTarjetaSanitaria, receta);
+            @RequestBody PKRecetasDTO pkRecetasDTO) {
+        Receta recetaAcrear = farmaciaServicios.servirReceta(id, numTarjetaSanitaria, pkRecetasDTO.getId_receta(), pkRecetasDTO.getId_prescripcion());
         return recetaAcrear != null
                 ? new ResponseEntity<>(recetaAcrear, HttpStatus.OK)
                 : new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
