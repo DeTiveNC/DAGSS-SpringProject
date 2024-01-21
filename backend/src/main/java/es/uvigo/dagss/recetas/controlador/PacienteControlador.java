@@ -62,7 +62,7 @@ public class PacienteControlador {
             @ApiResponse(responseCode = "200", description = "Citas ocupadas enviadas correctamente"),
             @ApiResponse(responseCode = "204", description = "Sin citas ocupadas")
     })
-    public ResponseEntity<List<Time>> anularCitaPaciente(
+    public ResponseEntity<List<Time>> citasOcupadas(
             @PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria, @PathVariable("fecha") Date fecha) {
         List<Time> citaAnulada = pacienteServicios.tiempoCitasOcupadas(numTarjetaSanitaria, fecha);
         return !citaAnulada.isEmpty()
