@@ -40,7 +40,7 @@ public class FarmaciaServiciosImpl implements FarmaciaServicios{
     @Override
     public Farmacia editFarmacia(Long id, Farmacia editFarmacia) {
         Optional<Farmacia> farmaciaBusq = farmaciaRepositorio.findById(id);
-        if (farmaciaBusq.isPresent() && farmaciaBusq.get().equals(editFarmacia)){
+        if (farmaciaBusq.isPresent() && farmaciaBusq.get().getId().equals(editFarmacia.getId())){
             farmaciaRepositorio.save(editFarmacia);
         }
         return null;

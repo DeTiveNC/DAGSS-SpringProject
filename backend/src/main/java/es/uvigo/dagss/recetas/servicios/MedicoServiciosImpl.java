@@ -121,7 +121,7 @@ public class MedicoServiciosImpl implements MedicoServicios{
     @Override
     public Medico editMedico(Long id, Medico editMedico) {
         Optional<Medico> medicoBusq = medicoRepositorio.findById(id);
-        if (medicoBusq.isPresent() && medicoBusq.get().equals(editMedico)){
+        if (medicoBusq.isPresent() && medicoBusq.get().getId().equals(editMedico.getId())){
             return medicoRepositorio.save(editMedico);
         }
         return null;

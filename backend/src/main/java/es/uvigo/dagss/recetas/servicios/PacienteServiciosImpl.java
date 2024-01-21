@@ -92,7 +92,7 @@ public class PacienteServiciosImpl implements PacienteServicios{
     @Override
     public Paciente editPaciente(Long id,Paciente editPaciente) {
         Optional<Paciente> pacientoBusq = pacienteRepositorio.findById(id);
-        if (pacientoBusq.isPresent() && pacientoBusq.get().equals(editPaciente)){
+        if (pacientoBusq.isPresent() && pacientoBusq.get().getId().equals(editPaciente.getId())){
             return pacienteRepositorio.save(editPaciente);
         }
         return null;
