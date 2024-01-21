@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +95,23 @@ public class PacienteServiciosImpl implements PacienteServicios{
         Optional<Paciente> pacientoBusq = pacienteRepositorio.findById(id);
         if (pacientoBusq.isPresent() && pacientoBusq.get().getId().equals(editPaciente.getId())){
             return pacienteRepositorio.save(editPaciente);
+        }
+        return null;
+    }
+     @Override
+    public List<Time> tiempoCitasOcupadas(String numTarjetaSanitaria, Date fecha) {
+        Optional<Paciente> paciente= pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
+        if(!paciente.isPresent()){
+            return null;
+        }
+        Optional<Medico> medicoCita = medicoRepositorio.findMedicoByNumeroColegiado(paciente.get().getMedico().getNumeroColegiado());
+        if (medicoCita.isPresent() && fecha != null){
+            List<Cita> citasActuales = citaRepositorio.findAppointmentsByMedicoAndFecha(medicoCita.get(), fecha);
+            List<Time> horaDisponible = new ArrayList<>();
+            for (Cita cita : citasActuales){
+                horaDisponible.add(cita.getHora());
+            }
+            return horaDisponible;
         }
         return null;
     }

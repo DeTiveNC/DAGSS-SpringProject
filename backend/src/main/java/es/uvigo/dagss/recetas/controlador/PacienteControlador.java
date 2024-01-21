@@ -14,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 @RestController
@@ -50,6 +52,20 @@ public class PacienteControlador {
             @PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria, @RequestBody Cita cita) {
         Cita citaAnulada = pacienteServicios.anularCitaPaciente(numTarjetaSanitaria, cita);
         return citaAnulada != null
+                ? new ResponseEntity<>(citaAnulada, HttpStatus.OK)
+                : new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+    }
+    @GetMapping(path = "/citasOcupadas/{numTarjetaSanitaria}/{fecha}")
+    @Operation(summary = "Busca las horas ocupadas para una cita en una fecha especifica",
+            description = "Este endpoint busca las horas de citas ocupadas para el medico asignado para una fecha especifica para un pacientee.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Citas ocupadas enviadas correctamente"),
+            @ApiResponse(responseCode = "204", description = "Sin citas ocupadas")
+    })
+    public ResponseEntity<List<Time>> anularCitaPaciente(
+            @PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria, @PathVariable("fecha") Date fecha) {
+        List<Time> citaAnulada = pacienteServicios.tiempoCitasOcupadas(numTarjetaSanitaria, fecha);
+        return !citaAnulada.isEmpty()
                 ? new ResponseEntity<>(citaAnulada, HttpStatus.OK)
                 : new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }

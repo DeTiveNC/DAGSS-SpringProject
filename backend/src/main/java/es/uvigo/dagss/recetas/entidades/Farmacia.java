@@ -19,6 +19,7 @@ public class Farmacia extends Usuario {
     private String nombreFarmaceutico;
     private String apellidosFarmaceutico;
     private String dni;
+    @Column(unique = true)
     private String numColegiado;
     @Embedded
     private Direccion direccion;

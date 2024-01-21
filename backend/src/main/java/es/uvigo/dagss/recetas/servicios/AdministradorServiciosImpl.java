@@ -220,8 +220,8 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         return farmaciaRepositorio.save(farmacia);
     }
     @Override
-    public List<Cita> findAllCitas(){
-        return citaRepositorio.findAll();
+    public List<Cita> findAllCitas(Date fecha){
+        return citaRepositorio.findAppointmentsByFecha(fecha);
     }
     @Override
     public List<Cita> findCitasByFechayMedicooPaciente(String numColegiado, String numTarjetaSanitaria){

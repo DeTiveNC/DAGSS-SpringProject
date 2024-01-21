@@ -19,6 +19,7 @@ public class Medico extends Usuario {
     private String nombre;
     private String apellidos;
     private String dni;
+    @Column(unique = true)
     private String numeroColegiado;
     private String telefono;
     @ManyToOne

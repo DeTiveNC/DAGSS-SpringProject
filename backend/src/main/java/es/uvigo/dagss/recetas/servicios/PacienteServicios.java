@@ -17,4 +17,5 @@ public interface PacienteServicios {
     List<Prescripcion> devolverPrescripcionPacientes(String numTarjetaSanitaria);
     Paciente viewPaciente(Long id);
     Paciente editPaciente(Long id,Paciente paciente);
+    List<Time> tiempoCitasOcupadas(String numTarjetaSanitaria, Date fecha);
 }

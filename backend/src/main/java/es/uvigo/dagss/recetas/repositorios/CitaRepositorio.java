@@ -19,6 +19,9 @@ public interface CitaRepositorio extends JpaRepository<Cita, Long> {
     List<Cita> findCitasByPacienteAndEstado(@Param("term") String term);
     @Query("SELECT c FROM Cita c WHERE c.medico = :medico AND c.fecha = :fecha")
     List<Cita> findAppointmentsByMedicoAndFecha(@Param("medico") Medico medico, @Param("fecha") Date fecha);
+    @Query("SELECT c FROM Cita c WHERE c.fecha = :fecha")
+    List<Cita> findAppointmentsByFecha( @Param("fecha") Date fecha);
+
     @Query("SELECT c FROM Cita c WHERE c.medico = :medico AND c.fecha = :fecha AND c.hora = :hora")
     Cita findAppointmentByMedicoAndFechaAndHora(@Param("medico") Medico medico, @Param("fecha") Date fecha, @Param("hora") Time hora);
     List<Cita> findCitasByMedico(Medico medico);

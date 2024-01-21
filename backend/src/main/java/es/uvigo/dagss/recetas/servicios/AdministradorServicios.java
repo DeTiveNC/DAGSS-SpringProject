@@ -32,7 +32,7 @@ public interface AdministradorServicios {
     Farmacia editFarmaciaA(Long id, Farmacia editFarmacia);
     Farmacia deleteFarmacia(Long id);
     Farmacia newFarmacia(Farmacia newFarmacia);
-    List<Cita> findAllCitas();
+    List<Cita> findAllCitas(Date fecha);
     List<Cita> findCitasByFechayMedicooPaciente(String numColegiado, String numTarjetaSanitaria);
     Cita anularCitaA(Long id, Cita editCita);
     Cita deleteCita(Long id);

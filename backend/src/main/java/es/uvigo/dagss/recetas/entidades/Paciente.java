@@ -20,7 +20,9 @@ public class Paciente extends Usuario {
     private String nombre;
     private String apellidos;
     private String dni;
+    @Column(unique = true)
     private String numTarjetaSanitaria;
+    @Column(unique = true)
     private String numSeguridadSocial;
     @Embedded
     private Direccion direccion;

@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -68,7 +69,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(administradorEliminado, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    @PostMapping(path = "/newAdministrador")
+    @PostMapping(path = "/administrador")
     @Operation(summary = "Crear un nuevo Admin",
             description = "Este endpoint crea un nuevo admin.")
     @ApiResponses(value = {
@@ -94,7 +95,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(todosCentros, HttpStatus.OK);
     }
-    @GetMapping(path = "/centro/encontrarCentro")
+    @GetMapping(path = "/centro/filtrarCentro")
     @Operation(summary = "Encontrar centros",
             description = "Este endpoint encuentra un centro según nombre y localidad.")
     @ApiResponses(value = {
@@ -133,7 +134,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(centroDeSaludEliminado, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    @PostMapping(path = "/newCentro")
+    @PostMapping(path = "/centro")
     @Operation(summary = "Crear un nuevo Centro",
             description = "Este endpoint crea un nuevo centro.")
     @ApiResponses(value = {
@@ -159,7 +160,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(todosMedicos, HttpStatus.OK);
     }
-    @GetMapping(path = "/medico/medicosNL")
+    @GetMapping(path = "/medico/filtrarMedico")
     @Operation(summary = "Encontrar medicos segun parametros",
             description = "Este endpoint recupera el perfil de un médico segun nombre o localidad.")
     @ApiResponses(value = {
@@ -198,7 +199,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(medicoEliminado, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    @PostMapping(path = "/newMedico")
+    @PostMapping(path = "/medico")
     @Operation(summary = "Crear un nuevo Medico",
             description = "Este endpoint crea un nuevo medico.")
     @ApiResponses(value = {
@@ -224,7 +225,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(todosPacientes, HttpStatus.OK);
     }
-    @GetMapping(path = "/paciente/pacienteNL")
+    @GetMapping(path = "/paciente/filtrarPaciente")
     @Operation(summary = "Ver perfil de los pacientes segun parametros",
             description = "Este endpoint recupera el perfil de un paciente segun Nombre o Localidad.")
     @ApiResponses(value = {
@@ -263,7 +264,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(pacienteEliminado, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    @PostMapping(path = "/newPaciente")
+    @PostMapping(path = "/paciente")
     @Operation(summary = "Crear un nuevo paciente",
             description = "Este endpoint crea un nuevo paciente.")
     @ApiResponses(value = {
@@ -289,7 +290,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(todosFarmacias, HttpStatus.OK);
     }
-    @GetMapping(path = "/farmacia/farmaciaNL")
+    @GetMapping(path = "/farmacia/filtrarFarmacia")
     @Operation(summary = "Ver perfil de las farmacias",
             description = "Este endpoint recupera el perfil de las farmacias.")
     @ApiResponses(value = {
@@ -328,7 +329,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(farmaciaEliminado, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
-    @PostMapping(path = "/newFarmacia")
+    @PostMapping(path = "/farmacia")
     @Operation(summary = "Crear una nueva farmacia",
             description = "Este endpoint crea una nueva farmacia.")
     @ApiResponses(value = {
@@ -341,15 +342,15 @@ public class AdminControlador {
                 ? new ResponseEntity<>(nuevoFarmacia, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     } 
-    @GetMapping(path = "/cita/todasCitas")
+    @GetMapping(path = "/cita/{fecha}")
     @Operation(summary = "Ver citas segun fecha",
             description = "Este endpoint recupera citas segun fecha.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Recuperación exitosa de las citas"),
             @ApiResponse(responseCode = "204", description = "Error al recuperar las citas")
     })
-    public ResponseEntity<List<Cita>> encontrarCitasPorFecha(){
-        List<Cita> citasFecha = administradorServicios.findAllCitas();
+    public ResponseEntity<List<Cita>> encontrarCitasPorFecha(@PathVariable Date fecha){
+        List<Cita> citasFecha = administradorServicios.findAllCitas(fecha);
         return citasFecha.isEmpty()
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(citasFecha, HttpStatus.OK);
@@ -367,7 +368,7 @@ public class AdminControlador {
                 ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
                 : new ResponseEntity<>(citasFecha, HttpStatus.OK);
     }
-    @GetMapping(path = "/cita/PacienteyMedico")
+    @GetMapping(path = "/cita/filtrarPorPacienteyMedico")
     @Operation(summary = "Ver cita segun parametros",
             description = "Este endpoint recupera una cita segun paciente o medico.")
     @ApiResponses(value = {
@@ -438,7 +439,7 @@ public class AdminControlador {
                 : new ResponseEntity<>(medicamentos, HttpStatus.OK);
     }
 
-    @PostMapping(path = "/newMedicamento")
+    @PostMapping(path = "/medicamento")
     @Operation(summary = "Crear un nuevo medicamento",
             description = "Este endpoint crea un nuevo medicamento.")
     @ApiResponses(value = {
