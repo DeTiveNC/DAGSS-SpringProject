@@ -1,0 +1,33 @@
+meta {
+  name: MedicosTestEndpoints
+  type: http
+  seq: 9
+}
+
+post {
+  url: http://localhost:8080/home/medicos/nueva-prescripcion
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "medicamento": {
+      
+    "nombreComercial": "VitaminBoost",
+    "principioActivo": "Vitaminas y Minerales",
+    "fabricante": "NutriHealth",
+    "familia": "Suplemento Vitamínico",
+    "numDosis": 60,
+    "activo": true
+  
+    },
+    "prescripcionDTO": {
+      "numColegiado": "M98765",
+      "numTarjetaSanitaria": "TS45678",
+      "dosis": 2,
+      "indicaciones": "Metertela por el ojete cuando tengas escozor",
+      "fechFinPres": "2025-01-21T17:00:57.892Z"
+    }
+  }
+}

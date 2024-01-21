@@ -4,28 +4,28 @@ meta {
   seq: 5
 }
 
-put {
-  url: http://localhost:8080/home/admins/farmacia/2
+post {
+  url: http://localhost:8080/home/admins/newFarmacia
   body: json
   auth: none
 }
 
 body:json {
   {
-    "id": 2,
+    "id":"2",
     "tipo": "FARMACIA",
-    "login": "jillo",
+    "login": "YUP",
     "fechaAlta": "2024-01-21T01:35:48.623+00:00",
     "ultimoAcceso": "2024-01-21T01:35:48.623+00:00",
     "activo": true,
-    "nombreEstablecimiento": "Farmacia JABC",
-    "nombreFarmaceutico": "Ana",
+    "nombreEstablecimiento": "Farmacia Rigoberta",
+    "nombreFarmaceutico": "Ana-Maria",
     "apellidosFarmaceutico": "Gómez",
     "dni": "87654321B",
     "numColegiado": "54321123123",
     "direccion": {
       "domicilio": "Calle Principal",
-      "localidad": "Ciudad XYZ",
+      "localidad": "A Coruña",
       "codigoPostal": 15011,
       "provincia": "Ourense"
     },

@@ -68,6 +68,8 @@ public class MedicoServiciosImpl implements MedicoServicios{
     public Cita completarCita(String numTarjetaSanitaria, Cita cita) {
         List<Cita> citaList = citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
         TipoEstado estadoCompletada = TipoEstado.COMPLETADA;
+        System.out.println(citaList);
+        System.out.println(citaList.contains(cita));
         if (citaList.contains(cita)){
             cita.setEstado(estadoCompletada);
             return citaRepositorio.save(cita);

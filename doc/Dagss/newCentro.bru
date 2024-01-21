@@ -6,6 +6,22 @@ meta {
 
 post {
   url: http://localhost:8080/home/admins/newCentro
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "nombre": "Clínica Salud Máxima",
+    "direccion": {
+      "domicilio": "Avenida de la Esperanza 123",
+      "localidad": "Ciudad Integral",
+      "codigoPostal": 23456,
+      "provincia": "Integralidad"
+    },
+    "telefono": "+8765432109",
+    "email": "info@saludmaxima.com",
+    "activo": true
+  }
+  
 }

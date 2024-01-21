@@ -1,9 +1,11 @@
 package es.uvigo.dagss.recetas.entidades;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Objects;
 
 @Entity
 @IdClass(RecetaId.class)
@@ -98,5 +100,24 @@ public class Receta implements Serializable {
 
     public void setFarmacia(Farmacia farmacia) {
         this.farmacia = farmacia;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Receta receta)) return false;
+        return Objects.equals(getPrescripcion().getId(), receta.getPrescripcion().getId()) &&
+                Objects.equals(getId(), receta.getId()) &&
+                Objects.equals(getFechInVal(), receta.getFechInVal()) &&
+                Objects.equals(getFechFinVal(), receta.getFechFinVal()) &&
+                Objects.equals(getUnid(), receta.getUnid()) &&
+                getEstado() == receta.getEstado() &&
+                Objects.equals(getFarmacia().getId(), receta.getFarmacia().getId());
+    }
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPrescripcion(), getId(), getFechInVal(), getFechFinVal(), getUnid(), getEstado(), getFarmacia());
     }
 }

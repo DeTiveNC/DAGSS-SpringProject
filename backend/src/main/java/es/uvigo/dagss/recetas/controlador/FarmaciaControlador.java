@@ -37,7 +37,7 @@ public class FarmaciaControlador {
                 : new ResponseEntity<>(recetasPaciente, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/{id}/{numTarjetaSanitaria}")
+    @PatchMapping(path = "/{id}/{numTarjetaSanitaria}")
     @Operation(summary = "Servir una receta a un paciente",
             description = "Este endpoint sirve una receta a un paciente.")
     @ApiResponses(value = {

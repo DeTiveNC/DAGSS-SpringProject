@@ -39,7 +39,6 @@ public abstract class Usuario implements Serializable {
     protected TipoUsuario tipo;
 
     private String login;
-	@JsonIgnore
     private String password;
 
     @Temporal(TemporalType.TIMESTAMP)

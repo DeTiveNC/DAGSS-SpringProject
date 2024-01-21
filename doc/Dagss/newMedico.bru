@@ -6,6 +6,35 @@ meta {
 
 post {
   url: http://localhost:8080/home/admins/newMedico
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "tipo": "MEDICO",
+    "login": "dr_you",
+    "password": "safe_password",
+    "fechaAlta": "2024-01-21T16:45:00.000Z",
+    "ultimoAcceso": "2024-01-21T16:45:00.000Z",
+    "activo": true,
+    "nombre": "Maria",
+    "apellidos": "Garcia",
+    "dni": "C76543210",
+    "numeroColegiado": "M56789",
+    "telefono": "+8765432109",
+    "centroDeSalud": {
+      "nombre": "Centro Médico Salud Integral",
+      "direccion": {
+        "domicilio": "Plaza de la Salud 123",
+        "localidad": "Ciudad Integral",
+        "codigoPostal": 76543,
+        "provincia": "Integralidad"
+      },
+      "telefono": "+1098765432",
+      "email": "info@centromedicointegral.com",
+      "activo": true
+    }
+  }
+  
 }

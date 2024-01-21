@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Objects;
 
 @Entity
 public class Prescripcion implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "medicamento_prescrito")
     private Medicamento medicamento;
     @ManyToOne
@@ -121,5 +122,17 @@ public class Prescripcion implements Serializable {
 
     public void setEstado(TipoEstado estado) {
         this.estado = estado;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Prescripcion that)) return false;
+        return Objects.equals(getId(), that.getId()) && Objects.equals(getMedicamento(), that.getMedicamento()) && Objects.equals(getMedico(), that.getMedico()) && Objects.equals(getPaciente(), that.getPaciente()) && Objects.equals(getDosis(), that.getDosis()) && Objects.equals(getIndicaciones(), that.getIndicaciones()) && Objects.equals(getFechInPres(), that.getFechInPres()) && Objects.equals(getFechFinPres(), that.getFechFinPres()) && getEstado() == that.getEstado();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getMedicamento(), getMedico(), getPaciente(), getDosis(), getIndicaciones(), getFechInPres(), getFechFinPres(), getEstado());
     }
 }

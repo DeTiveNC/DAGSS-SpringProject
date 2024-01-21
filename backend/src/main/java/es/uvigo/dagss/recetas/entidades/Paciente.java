@@ -32,6 +32,7 @@ public class Paciente extends Usuario {
     private CentroDeSalud centroDeSalud;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "medico_asig")
+    @JsonIgnore
     private Medico medico;
 
 

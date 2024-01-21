@@ -8,6 +8,7 @@ import es.uvigo.dagss.recetas.entidades.Medicamento;
 import es.uvigo.dagss.recetas.entidades.Medico;
 import es.uvigo.dagss.recetas.entidades.Prescripcion;
 import es.uvigo.dagss.recetas.servicios.MedicoServicios;
+import es.uvigo.dagss.recetas.servicios.PacienteServicios;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -24,7 +25,8 @@ import java.util.List;
 @RequestMapping(path = "/home/medicos")
 @Tag(name = "Medico Endpoint", description = "Medico Controlador")
 public class MedicoControlador {
-
+    @Autowired
+    private PacienteServicios pacienteServicios;
     @Autowired
     private MedicoServicios medicoServicios;
 
@@ -167,5 +169,19 @@ public class MedicoControlador {
         return editMedico != null
                 ? new ResponseEntity<>(editMedico, HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "/prescripciones/{numTarjetaSanitaria}")
+    @Operation(summary = "Ver prescripciones del paciente",
+            description = "Este endpoint permite ver las prescripciones de un paciente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Perfil de médico editado exitosamente"),
+            @ApiResponse(responseCode = "204", description = "Error al editar el perfil del médico")
+    })
+    public ResponseEntity<List<Prescripcion>> devolverPacientesPrescripcion(@PathVariable("numTarjetaSanitaria") String numTarjetaSanitaria){
+        List<Prescripcion> listaPresPac = pacienteServicios.devolverPrescripcionPacientes(numTarjetaSanitaria);
+        return listaPresPac.isEmpty()
+                ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+                : new ResponseEntity<>(listaPresPac,HttpStatus.OK);
     }
 }

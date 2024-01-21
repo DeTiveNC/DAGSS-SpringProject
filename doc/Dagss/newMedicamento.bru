@@ -6,6 +6,18 @@ meta {
 
 post {
   url: http://localhost:8080/home/admins/newMedicamento
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "nombreComercial": "VitaminBoost",
+    "principioActivo": "Vitaminas y Minerales",
+    "fabricante": "NutriHealth",
+    "familia": "Suplemento Vitamínico",
+    "numDosis": 60,
+    "activo": true
+  }
+  
 }

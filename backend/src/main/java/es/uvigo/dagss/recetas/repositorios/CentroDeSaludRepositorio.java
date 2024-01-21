@@ -12,6 +12,6 @@ import java.util.Optional;
 @Repository
 public interface CentroDeSaludRepositorio extends JpaRepository<CentroDeSalud, String> {
     @Query("SELECT c FROM CentroDeSalud c WHERE (:term is null or LOWER(c.nombre) LIKE LOWER(CONCAT('%', :term, '%'))) AND (:term2 is null or LOWER(c.direccion.localidad) LIKE LOWER(CONCAT('%', :term2, '%')))")
-    List<CentroDeSalud> findCentroDeSaludsByNombreAndDireccion(@Param("term") String term, @Param("term") String term2);
+    List<CentroDeSalud> findCentroDeSaludsByNombreAndDireccion(@Param("term") String term, @Param("term2") String term2);
     Optional<CentroDeSalud> findCentroDeSaludByNombre(String nombre);
 }

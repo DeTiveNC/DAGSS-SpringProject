@@ -1,0 +1,82 @@
+meta {
+  name: PacienteTestEndpointCita
+  type: http
+  seq: 8
+}
+
+get {
+  url: http://localhost:8080/home/pacientes/recetas/TS45678
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "id": 2,
+      "paciente": {
+        "id": 10,
+        "tipo": "PACIENTE",
+        "login": "patient_user1",
+        "password": "patient_pass1",
+        "fechaAlta": "2024-01-21T16:18:13.812+00:00",
+        "ultimoAcceso": "2024-01-21T16:18:13.812+00:00",
+        "activo": true,
+        "nombre": "John",
+        "apellidos": "Doe",
+        "dni": "A12345678",
+        "numTarjetaSanitaria": "TS12345",
+        "numSeguridadSocial": "SSN67890",
+        "direccion": {
+          "domicilio": "Calle Saludable 456",
+          "localidad": "Ciudad Vital",
+          "codigoPostal": 54321,
+          "provincia": "Integralidad"
+        },
+        "telefono": "+1234567890",
+        "email": "john.doe@example.com",
+        "fechaNacimiento": "1990-05-15",
+        "centroDeSalud": {
+          "nombre": "Clínica Vitalis",
+          "direccion": {
+            "domicilio": "Calle Principal 456",
+            "localidad": "Ciudad Vital",
+            "codigoPostal": 34567,
+            "provincia": "Saludlandia"
+          },
+          "telefono": "+8765432109",
+          "email": "info@clinicavitalis.com",
+          "activo": true
+        }
+      },
+      "medico": {
+        "id": 4,
+        "tipo": "MEDICO",
+        "login": "doctor_smith",
+        "password": "M54321",
+        "fechaAlta": "2024-01-21T16:15:00.000+00:00",
+        "ultimoAcceso": "2024-01-21T16:15:00.000+00:00",
+        "activo": true,
+        "nombre": "Alice",
+        "apellidos": "Smith",
+        "dni": "A98765432",
+        "numeroColegiado": "M54321",
+        "telefono": "+1234567890",
+        "centroDeSalud": {
+          "nombre": "Clínica Vitalis",
+          "direccion": {
+            "domicilio": "Calle Principal 456",
+            "localidad": "Ciudad Vital",
+            "codigoPostal": 34567,
+            "provincia": "Saludlandia"
+          },
+          "telefono": "+8765432109",
+          "email": "info@clinicavitalis.com",
+          "activo": true
+        }
+      },
+      "fecha": "2024-02-01",
+      "hora": "08:30:00",
+      "duracion": 15,
+      "estado": "PLANIFICADA"
+    }
+}

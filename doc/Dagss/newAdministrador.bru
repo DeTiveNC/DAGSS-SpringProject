@@ -6,6 +6,21 @@ meta {
 
 post {
   url: http://localhost:8080/home/admins/newAdministrador
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "id": 3,
+    "tipo": "ADMINISTRADOR",
+    "login": "admin_user3",
+    "password": "admin_pass3",
+    "fechaAlta": "2024-01-21T16:45:00.000Z",
+    "ultimoAcceso": "2024-01-21T16:45:00.000Z",
+    "activo": true,
+    "nombre": "Admin Tres",
+    "email": "admin3@example.com"
+  }
+  
 }

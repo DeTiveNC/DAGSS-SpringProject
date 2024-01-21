@@ -1,0 +1,99 @@
+meta {
+  name: TestEnpointsFamrmacia
+  type: http
+  seq: 10
+}
+
+patch {
+  url: http://localhost:8080/home/farmacias/1/TS45678
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+      "prescripcion": {
+        "id": 1,
+        "medicamento": {
+          "nombreComercial": "VitaminBoost",
+          "principioActivo": "Vitaminas y Minerales",
+          "fabricante": "NutriHealth",
+          "familia": "Suplemento Vitamínico",
+          "numDosis": 60,
+          "activo": true
+        },
+        "medico": {
+          "id": 3,
+          "tipo": "MEDICO",
+          "login": "dr_jones",
+          "password": "M98765",
+          "fechaAlta": "2024-01-21T16:30:00.000+00:00",
+          "ultimoAcceso": "2024-01-21T16:30:00.000+00:00",
+          "activo": true,
+          "nombre": "David",
+          "apellidos": "Jones",
+          "dni": "B87654321",
+          "numeroColegiado": "M98765",
+          "telefono": "+9876543210",
+          "centroDeSalud": {
+            "nombre": "Hospital Esperanza",
+            "direccion": {
+              "domicilio": "Avenida Salud 789",
+              "localidad": "Ciudad Esperanza",
+              "codigoPostal": 67890,
+              "provincia": "Bienestar"
+            },
+            "telefono": "+9876543210",
+            "email": "info@hospitalesperanza.com",
+            "activo": true
+          }
+        },
+        "paciente": {
+          "id": 12,
+          "tipo": "PACIENTE",
+          "login": "patient_user3",
+          "password": "patient_pass3",
+          "fechaAlta": "2024-01-21T16:45:00.000+00:00",
+          "ultimoAcceso": "2024-01-21T16:45:00.000+00:00",
+          "activo": true,
+          "nombre": "Elena",
+          "apellidos": "García",
+          "dni": "E65432109",
+          "numTarjetaSanitaria": "TS45678",
+          "numSeguridadSocial": "SSN23456",
+          "direccion": {
+            "domicilio": "Calle Esperanza 123",
+            "localidad": "Ciudad Esperanza",
+            "codigoPostal": 23456,
+            "provincia": "Bienestar"
+          },
+          "telefono": "+8765432109",
+          "email": "elena.garcia@example.com",
+          "fechaNacimiento": "1992-03-08",
+          "centroDeSalud": {
+            "nombre": "Hospital Esperanza",
+            "direccion": {
+              "domicilio": "Avenida Salud 789",
+              "localidad": "Ciudad Esperanza",
+              "codigoPostal": 67890,
+              "provincia": "Bienestar"
+            },
+            "telefono": "+9876543210",
+            "email": "info@hospitalesperanza.com",
+            "activo": true
+          }
+        },
+        "dosis": 2,
+        "indicaciones": "Metertela por el ojete cuando tengas escozor",
+        "fechInPres": "2024-01-21",
+        "fechFinPres": "2025-01-21",
+        "estado": "ACTIVO"
+      },
+      "id": 2,
+      "fechInVal": "2024-02-18",
+      "fechFinVal": "2024-03-17",
+      "unid": 1,
+      "estado": "PLANIFICADA",
+      "farmacia": null
+    }
+}

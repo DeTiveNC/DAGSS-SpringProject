@@ -55,7 +55,6 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         if (findAllAdmins.contains(administrador)) {
             return null;
         }
-        administrador.setPassword("123456789");
         return administradorRepositorio.save(administrador);
     }
     @Override
@@ -126,8 +125,15 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         Random RMD = new Random();
         medico.setPassword(medico.getNumeroColegiado());
         List<CentroDeSalud> centroDeSaludRMD = centroDeSaludRepositorio.findAll();
-        medico.setCentroDeSalud(centroDeSaludRMD.get(RMD.nextInt(centroDeSaludRMD.size())));
-        return medicoRepositorio.save(medico);
+        System.out.println(centroDeSaludRMD);
+        if (!centroDeSaludRMD.isEmpty()){
+            CentroDeSalud centroDeSaludInt = centroDeSaludRMD.get(RMD.nextInt(centroDeSaludRMD.size()));
+            if (centroDeSaludInt != null){
+                medico.setCentroDeSalud(centroDeSaludInt);
+                return medicoRepositorio.save(medico);
+            }
+        }
+        return null;
     }
     @Override
     public List<Paciente> findAllPacientes(){
@@ -168,11 +174,16 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
         }
         Random rmd = new Random();
         List<CentroDeSalud> centroDeSaludEscogido = centroDeSaludRepositorio.findCentroDeSaludsByNombreAndDireccion(null, paciente.getDireccion().getLocalidad());
-        CentroDeSalud CentroSaludRMD = centroDeSaludEscogido.get(rmd.nextInt(centroDeSaludEscogido.size()));
-        List<Medico> medicoEscogido = medicoRepositorio.findMedicosByNombreAndCentroDeSaludDireccionLocalidad(null, CentroSaludRMD.getDireccion().getLocalidad());
-        paciente.setMedico(medicoEscogido.get(rmd.nextInt(medicoEscogido.size())));
-        paciente.setCentroDeSalud(CentroSaludRMD);
-        return pacienteRepositorio.save(paciente);
+        if (!centroDeSaludEscogido.isEmpty()){
+            CentroDeSalud CentroSaludRMD = centroDeSaludEscogido.get(rmd.nextInt(centroDeSaludEscogido.size()));
+            List<Medico> medicoEscogido = medicoRepositorio.findMedicosByNombreAndCentroDeSaludDireccionLocalidad(CentroSaludRMD.getDireccion().getLocalidad(), null);
+            if (!medicoEscogido.isEmpty()){
+                paciente.setMedico(medicoEscogido.get(rmd.nextInt(medicoEscogido.size())));
+                paciente.setCentroDeSalud(CentroSaludRMD);
+                return pacienteRepositorio.save(paciente);
+            }
+        }
+        return null;
     }
     @Override
     public List<Farmacia> findAllFarmacias(){

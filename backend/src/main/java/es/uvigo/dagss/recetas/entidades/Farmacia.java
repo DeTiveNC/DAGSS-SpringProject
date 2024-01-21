@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @DiscriminatorValue(value = "FARMACIA")
@@ -110,5 +111,18 @@ public class Farmacia extends Usuario {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Farmacia farmacia)) return false;
+        if (!super.equals(o)) return false;
+        return Objects.equals(getId(), farmacia.getId()) && Objects.equals(getNombreEstablecimiento(), farmacia.getNombreEstablecimiento()) && Objects.equals(getNombreFarmaceutico(), farmacia.getNombreFarmaceutico()) && Objects.equals(getApellidosFarmaceutico(), farmacia.getApellidosFarmaceutico()) && Objects.equals(getDni(), farmacia.getDni()) && Objects.equals(getNumColegiado(), farmacia.getNumColegiado()) && Objects.equals(getDireccion(), farmacia.getDireccion()) && Objects.equals(getTelefono(), farmacia.getTelefono()) && Objects.equals(getEmail(), farmacia.getEmail());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getId(), getNombreEstablecimiento(), getNombreFarmaceutico(), getApellidosFarmaceutico(), getDni(), getNumColegiado(), getDireccion(), getTelefono(), getEmail());
     }
 }

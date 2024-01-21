@@ -5,6 +5,7 @@ import es.uvigo.dagss.recetas.entidades.Receta;
 import es.uvigo.dagss.recetas.entidades.TipoEstado;
 import es.uvigo.dagss.recetas.repositorios.FarmaciaRepositorio;
 import es.uvigo.dagss.recetas.repositorios.RecetaRepositorio;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
