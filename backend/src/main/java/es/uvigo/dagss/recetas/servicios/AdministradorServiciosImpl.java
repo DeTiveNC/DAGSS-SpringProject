@@ -6,276 +6,275 @@ import java.util.Optional;
 import java.util.Random;
 
 import es.uvigo.dagss.recetas.entidades.*;
-import es.uvigo.dagss.recetas.repositorios.*;
-import jakarta.transaction.Transactional;
+import es.uvigo.dagss.recetas.daos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AdministradorServiciosImpl implements AdministradorServicios {
     @Autowired
-    private AdministradorRepositorio administradorRepositorio;
+    private AdministradorDAO administradorDAO;
     @Autowired
-    private CentroDeSaludRepositorio centroDeSaludRepositorio;
+    private CentroDeSaludDAO centroDeSaludDAO;
     @Autowired
-    private MedicoRepositorio medicoRepositorio;
+    private MedicoDAO medicoDAO;
     @Autowired
-    private PacienteRepositorio pacienteRepositorio;
+    private PacienteDAO pacienteDAO;
     @Autowired
-    private FarmaciaRepositorio farmaciaRepositorio;
+    private FarmaciaDAO farmaciaDAO;
     @Autowired
-    private CitaRepositorio citaRepositorio;
+    private CitaDAO citaDAO;
     @Autowired
-    private MedicamentoRepositorio medicamentoRepositorio;
+    private MedicamentoDAO medicamentoDAO;
 
     @Override
     public List<Administrador> findAllAdmins(){
-        return administradorRepositorio.findAll();
+        return administradorDAO.findAll();
     }
     @Override
     public Administrador editAdministrador(Long id, Administrador editAdministrador){
-        Optional<Administrador> administradorBusq = administradorRepositorio.findById(id);
+        Optional<Administrador> administradorBusq = administradorDAO.findById(id);
         if (administradorBusq.isPresent() && administradorBusq.get().getId().equals(editAdministrador.getId())){
-            return administradorRepositorio.save(editAdministrador);
+            return administradorDAO.save(editAdministrador);
         }
         return null;
     }
     @Override
     public Administrador deleteAdministrador(Long id){
-        Optional<Administrador> administradorEliminado = administradorRepositorio.findById(id);
+        Optional<Administrador> administradorEliminado = administradorDAO.findById(id);
         if (administradorEliminado.isPresent()){
             administradorEliminado.get().desactivar();
-            return administradorRepositorio.save(administradorEliminado.get());
+            return administradorDAO.save(administradorEliminado.get());
         }
         return null;
     }
     @Override
     public Administrador newAdministrador(Administrador administrador){
-        List<Administrador> findAllAdmins = administradorRepositorio.findAll();
+        List<Administrador> findAllAdmins = administradorDAO.findAll();
         if (findAllAdmins.contains(administrador)) {
             return null;
         }
-        return administradorRepositorio.save(administrador);
+        return administradorDAO.save(administrador);
     }
     @Override
     public List<CentroDeSalud> findAllCentros(){
-        return centroDeSaludRepositorio.findAll();
+        return centroDeSaludDAO.findAll();
     }
     @Override
     public List<CentroDeSalud> findCentrosByNombreoLocalidad(String nombre, String localidad){
-        return centroDeSaludRepositorio.findCentroDeSaludsByNombreAndDireccion(nombre, localidad);
+        return centroDeSaludDAO.findCentroDeSaludsByNombreAndDireccion(nombre, localidad);
     }
     @Override
     public CentroDeSalud editCentroDeSalud(String nombreCentro, CentroDeSalud centroDeSalud){
-        Optional<CentroDeSalud> centroDeSaludBusq = centroDeSaludRepositorio.findCentroDeSaludByNombre(nombreCentro);
+        Optional<CentroDeSalud> centroDeSaludBusq = centroDeSaludDAO.findCentroDeSaludByNombre(nombreCentro);
         if (centroDeSaludBusq.isPresent() && centroDeSaludBusq.get().getNombre().equals(centroDeSalud.getNombre())){
-            return centroDeSaludRepositorio.save(centroDeSalud);
+            return centroDeSaludDAO.save(centroDeSalud);
         }
         return null;
     }
     @Override
     public CentroDeSalud deleteCentroDeSalud(String nombre){
-        Optional<CentroDeSalud> centroDeSaludEliminado = centroDeSaludRepositorio.findCentroDeSaludByNombre(nombre);
+        Optional<CentroDeSalud> centroDeSaludEliminado = centroDeSaludDAO.findCentroDeSaludByNombre(nombre);
         if (centroDeSaludEliminado.isPresent()){
             centroDeSaludEliminado.get().setActivo(false);
-            return centroDeSaludRepositorio.save(centroDeSaludEliminado.get());
+            return centroDeSaludDAO.save(centroDeSaludEliminado.get());
         }
         return null;
     }
     @Override
     public CentroDeSalud newCentroDeSalud(CentroDeSalud centroDeSalud){
-        List<CentroDeSalud> findAllCentro = centroDeSaludRepositorio.findAll();
+        List<CentroDeSalud> findAllCentro = centroDeSaludDAO.findAll();
         if (findAllCentro.contains(centroDeSalud)) {
             return null;
         }
-        return centroDeSaludRepositorio.save(centroDeSalud);
+        return centroDeSaludDAO.save(centroDeSalud);
     }
     @Override
     public List<Medico> findAllMedicos(){
-        return medicoRepositorio.findAll();
+        return medicoDAO.findAll();
     }
     @Override
     public List<Medico> findMedicosByNombreoLocalidad(String nombre, String localidad){
-        return medicoRepositorio.findMedicosByNombreAndCentroDeSaludDireccionLocalidad(nombre, localidad);
+        return medicoDAO.findMedicosByNombreAndCentroDeSaludDireccionLocalidad(nombre, localidad);
     }
     @Override
     public Medico editMedico(Long id, Medico medico){
-        Optional<Medico> medicoBusq = medicoRepositorio.findById(id);
+        Optional<Medico> medicoBusq = medicoDAO.findById(id);
         if (medicoBusq.isPresent() && medicoBusq.get().getId().equals(medico.getId())){
-            return medicoRepositorio.save(medico);
+            return medicoDAO.save(medico);
         }
         return null;
     }
 
     @Override
     public Medico deleteMedico(Long id) {
-        Optional<Medico> medicoOptional = medicoRepositorio.findById(id);
+        Optional<Medico> medicoOptional = medicoDAO.findById(id);
         if (medicoOptional.isPresent()){
             medicoOptional.get().desactivar();
-            return medicoRepositorio.save(medicoOptional.get());
+            return medicoDAO.save(medicoOptional.get());
         }
         return null;
     }
     @Override
     public Medico newMedicoA(Medico medico){
-        List<Medico> findAllMedico = medicoRepositorio.findAll();
+        List<Medico> findAllMedico = medicoDAO.findAll();
         if (findAllMedico.contains(medico)) {
             return null;
         }
         Random RMD = new Random();
         medico.setPassword(medico.getNumeroColegiado());
-        List<CentroDeSalud> centroDeSaludRMD = centroDeSaludRepositorio.findAll();
+        List<CentroDeSalud> centroDeSaludRMD = centroDeSaludDAO.findAll();
         System.out.println(centroDeSaludRMD);
         if (!centroDeSaludRMD.isEmpty()){
             CentroDeSalud centroDeSaludInt = centroDeSaludRMD.get(RMD.nextInt(centroDeSaludRMD.size()));
             if (centroDeSaludInt != null){
                 medico.setCentroDeSalud(centroDeSaludInt);
-                return medicoRepositorio.save(medico);
+                return medicoDAO.save(medico);
             }
         }
         return null;
     }
     @Override
     public List<Paciente> findAllPacientes(){
-        return pacienteRepositorio.findAll();
+        return pacienteDAO.findAll();
 
     }
     @Override
     public List<Paciente> findPacienteByNombreoLocalidad(String nombre, String localidad){
-        return pacienteRepositorio.findPacientesByNombreAndLocalidad(nombre, localidad);
+        return pacienteDAO.findPacientesByNombreAndLocalidad(nombre, localidad);
     }
 
     @Override
     public List<Paciente> findPacienteByCentroDeSaludyMedico(String centroDeSalud, Long medico){
-        return pacienteRepositorio.findPacientesByCentroDeSaludAndMedico(centroDeSalud, medico);
+        return pacienteDAO.findPacientesByCentroDeSaludAndMedico(centroDeSalud, medico);
     }
     @Override
     public Paciente editPacienteA(Long id, Paciente paciente){
-        Optional<Paciente> pacienteBusq = pacienteRepositorio.findById(id);
+        Optional<Paciente> pacienteBusq = pacienteDAO.findById(id);
         if (pacienteBusq.isPresent() && pacienteBusq.get().getId().equals(paciente.getId())){
-            return pacienteRepositorio.save(paciente);
+            return pacienteDAO.save(paciente);
         }
         return null;
     }
     @Override
     public Paciente deletePaciente(Long id){
-        Optional<Paciente> pacienteBusq = pacienteRepositorio.findById(id);
+        Optional<Paciente> pacienteBusq = pacienteDAO.findById(id);
         if (pacienteBusq.isPresent()){
             pacienteBusq.get().desactivar();
-            return pacienteRepositorio.save(pacienteBusq.get());
+            return pacienteDAO.save(pacienteBusq.get());
         }
         return null;
     }
     @Override
     public Paciente newPaciente(Paciente paciente){
-        List<Paciente> findAllPaciente = pacienteRepositorio.findAll();
+        List<Paciente> findAllPaciente = pacienteDAO.findAll();
         if (findAllPaciente.contains(paciente)) {
             return null;
         }
         Random rmd = new Random();
-        List<CentroDeSalud> centroDeSaludEscogido = centroDeSaludRepositorio.findCentroDeSaludsByNombreAndDireccionProvincia(null, paciente.getDireccion().getProvincia());
+        List<CentroDeSalud> centroDeSaludEscogido = centroDeSaludDAO.findCentroDeSaludsByNombreAndDireccionProvincia(null, paciente.getDireccion().getProvincia());
         if (!centroDeSaludEscogido.isEmpty()){
             CentroDeSalud CentroSaludRMD = centroDeSaludEscogido.get(rmd.nextInt(centroDeSaludEscogido.size()));
-            List<Medico> medicoEscogido = medicoRepositorio.findMedicosByNombreAndCentroDeSaludDireccionProvincia(CentroSaludRMD.getDireccion().getProvincia(), null);
+            List<Medico> medicoEscogido = medicoDAO.findMedicosByNombreAndCentroDeSaludDireccionProvincia(CentroSaludRMD.getDireccion().getProvincia(), null);
             if (!medicoEscogido.isEmpty()){
                 paciente.setMedico(medicoEscogido.get(rmd.nextInt(medicoEscogido.size())));
                 paciente.setCentroDeSalud(CentroSaludRMD);
-                return pacienteRepositorio.save(paciente);
+                return pacienteDAO.save(paciente);
             }
         }
         return null;
     }
     @Override
     public List<Farmacia> findAllFarmacias(){
-        return farmaciaRepositorio.findAll();
+        return farmaciaDAO.findAll();
     }
     @Override
     public List<Farmacia> findFarmaciasByNombreoLocalidad(String nombre, String localidad){
-        return farmaciaRepositorio.findFarmaciasByNombreEstablecimientoAndDireccionLocalidad(nombre,localidad);
+        return farmaciaDAO.findFarmaciasByNombreEstablecimientoAndDireccionLocalidad(nombre,localidad);
     }
     @Override
     public Farmacia editFarmaciaA(Long id, Farmacia editFarmacia){
-        Optional<Farmacia> farmaciaBusq = farmaciaRepositorio.findById(id);
+        Optional<Farmacia> farmaciaBusq = farmaciaDAO.findById(id);
         if (farmaciaBusq.isPresent() && farmaciaBusq.get().getId().equals(editFarmacia.getId())){
-            return farmaciaRepositorio.save(editFarmacia);
+            return farmaciaDAO.save(editFarmacia);
         }
         return null;
     }
     @Override
     public Farmacia deleteFarmacia(Long id){
-        Optional<Farmacia> optionalFarmacia = farmaciaRepositorio.findById(id);
+        Optional<Farmacia> optionalFarmacia = farmaciaDAO.findById(id);
         if (optionalFarmacia.isPresent()){
             optionalFarmacia.get().desactivar();
-            return farmaciaRepositorio.save(optionalFarmacia.get());
+            return farmaciaDAO.save(optionalFarmacia.get());
         }
         return null;
     }
     @Override
     public Farmacia newFarmacia(Farmacia farmacia){
-        List<Farmacia> findAllFarmacia = farmaciaRepositorio.findAll();
+        List<Farmacia> findAllFarmacia = farmaciaDAO.findAll();
         if (findAllFarmacia.contains(farmacia)) {
             return null;
         }
         farmacia.setPassword(farmacia.getNumColegiado());
-        return farmaciaRepositorio.save(farmacia);
+        return farmaciaDAO.save(farmacia);
     }
     @Override
     public List<Cita> findAllCitas(Date fecha){
-        return citaRepositorio.findAppointmentsByFecha(fecha);
+        return citaDAO.findAppointmentsByFecha(fecha);
     }
     @Override
     public List<Cita> findCitasByFechayMedicooPaciente(String numColegiado, String numTarjetaSanitaria){
-        return citaRepositorio.findCitasByMedicoAndPaciente(numColegiado,numTarjetaSanitaria);
+        return citaDAO.findCitasByMedicoAndPaciente(numColegiado,numTarjetaSanitaria);
     }
     @Override
     public Cita anularCitaA(Long id, Cita cita){
-        Optional<Cita> citaBusq = citaRepositorio.findById(id);
+        Optional<Cita> citaBusq = citaDAO.findById(id);
         if (citaBusq.isPresent() && citaBusq.get().equals(cita)){
-            return citaRepositorio.save(cita);
+            return citaDAO.save(cita);
         }
         return null;
     }
     @Override
     public Cita deleteCita(Long id){
-        Optional<Cita> citaOptional = citaRepositorio.findById(id);
+        Optional<Cita> citaOptional = citaDAO.findById(id);
         TipoEstado estadoCita = TipoEstado.ANULADA;
         if (citaOptional.isPresent()){
             citaOptional.get().setEstado(estadoCita);
-            return citaRepositorio.save(citaOptional.get());
+            return citaDAO.save(citaOptional.get());
         }
         return null;
     }
     @Override
     public List<Medicamento> findAllMedicamentos(){
-        return medicamentoRepositorio.findAll();
+        return medicamentoDAO.findAll();
     }
     @Override
     public List<Medicamento> findMedicamentoBy4(String valor, String valor2, String valor3, String valor4){
-        return medicamentoRepositorio.findMedicamentosByNombreComercialAndFabricanteAndFamiliaAndPrincipioActivo(valor,valor2,valor3,valor4);
+        return medicamentoDAO.findMedicamentosByNombreComercialAndFabricanteAndFamiliaAndPrincipioActivo(valor,valor2,valor3,valor4);
     }
     @Override
     public Medicamento editMedicamento(String nombreComercial, Medicamento medicamento){
-        Optional<Medicamento> medicamentoBusq = medicamentoRepositorio.findById(nombreComercial);
+        Optional<Medicamento> medicamentoBusq = medicamentoDAO.findById(nombreComercial);
         if (medicamentoBusq.isPresent() && medicamentoBusq.get().getNombreComercial().equals(medicamento.getNombreComercial())){
-            return medicamentoRepositorio.save(medicamento);
+            return medicamentoDAO.save(medicamento);
         }
         return null;
     }
     @Override
     public Medicamento deleteMedicamento(String nombreComercial){
-        Optional<Medicamento> medicamentoOptional = medicamentoRepositorio.findById(nombreComercial);
+        Optional<Medicamento> medicamentoOptional = medicamentoDAO.findById(nombreComercial);
         if (medicamentoOptional.isPresent()){
             medicamentoOptional.get().setActivo(false);
-            return medicamentoRepositorio.save(medicamentoOptional.get());
+            return medicamentoDAO.save(medicamentoOptional.get());
         }
         return null;
     }
     @Override
     public Medicamento newMedicamento(Medicamento medicamento){
-        List<Medicamento> findAllMedicamento = medicamentoRepositorio.findAll();
+        List<Medicamento> findAllMedicamento = medicamentoDAO.findAll();
         if (findAllMedicamento.contains(medicamento)) {
             return null;
         }
-        return medicamentoRepositorio.save(medicamento);
+        return medicamentoDAO.save(medicamento);
     }
 }

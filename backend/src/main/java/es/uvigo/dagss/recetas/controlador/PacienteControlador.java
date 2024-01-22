@@ -41,7 +41,7 @@ public class PacienteControlador {
                 : new ResponseEntity<>(citasPaciente, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/citas/{numTarjetaSanitaria}")
+    @PatchMapping(path = "/cancelar/{numTarjetaSanitaria}")
     @Operation(summary = "Cancelar una cita para un paciente específico",
             description = "Este endpoint cancela una cita para un paciente.")
     @ApiResponses(value = {

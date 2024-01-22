@@ -45,7 +45,7 @@ public class MedicoControlador {
                 : new ResponseEntity<>(citasDispo, HttpStatus.OK);
     }
 
-    @PutMapping(path = "/citas/{numTarjetaSanitaria}")
+    @PatchMapping(path = "/ausencia/{numTarjetaSanitaria}")
     @Operation(summary = "Registrar ausencia de un paciente",
             description = "Este endpoint registra la ausencia de un paciente para el médico especificado.")
     @ApiResponses(value = {
@@ -75,7 +75,7 @@ public class MedicoControlador {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "/anular/{numTarjetaSanitaria}")
+    @PatchMapping(path = "/anular/{numTarjetaSanitaria}")
     @Operation(summary = "Anular cita de un paciente",
             description = "Este endpoint anula una cita para el paciente especificado.")
     @ApiResponses(value = {
@@ -90,7 +90,7 @@ public class MedicoControlador {
                 : new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping(path = "/completar/{numTarjetaSanitaria}")
+    @PatchMapping(path = "/completar/{numTarjetaSanitaria}")
     @Operation(summary = "Completar cita de un paciente",
             description = "Este endpoint marca una cita como completada para el paciente especificado.")
     @ApiResponses(value = {

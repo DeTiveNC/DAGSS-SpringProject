@@ -1,7 +1,7 @@
 package es.uvigo.dagss.recetas.servicios;
 
 import es.uvigo.dagss.recetas.entidades.*;
-import es.uvigo.dagss.recetas.repositorios.*;
+import es.uvigo.dagss.recetas.daos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,34 +14,34 @@ import java.util.Optional;
 @Service
 public class PacienteServiciosImpl implements PacienteServicios{
     @Autowired
-    private PacienteRepositorio pacienteRepositorio;
+    private PacienteDAO pacienteDAO;
     @Autowired
-    private CitaRepositorio citaRepositorio;
+    private CitaDAO citaDAO;
     @Autowired
-    private RecetaRepositorio recetaRepositorio;
+    private RecetaDAO recetaDAO;
     @Autowired
-    private PrescripcionRepositorio prescripcionRepositorio;
+    private PrescripcionDAO prescripcionDAO;
     @Autowired
-    private MedicoRepositorio medicoRepositorio;
+    private MedicoDAO medicoDAO;
     @Autowired
     private MedicoServiciosImpl medicoServicios;
     @Override
     public List<Cita> devolverCitasPaciente(String numTarjetaSanitaria) {
-        List<Cita> citas= citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
+        List<Cita> citas= citaDAO.findCitasByPacienteAndEstado(numTarjetaSanitaria);
         for(Cita cambios:citas){
-            cambios.setMedico(medicoRepositorio.findById(cambios.getMedico().getId()).get());
-            cambios.setPaciente(pacienteRepositorio.findById(cambios.getPaciente().getId()).get());
+            cambios.setMedico(medicoDAO.findById(cambios.getMedico().getId()).get());
+            cambios.setPaciente(pacienteDAO.findById(cambios.getPaciente().getId()).get());
         }
         return citas;
     }
 
     @Override
     public Cita anularCitaPaciente(String numTarjetaSanitaria, Cita citaAnular) {
-        List<Cita> citaOptional = citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
+        List<Cita> citaOptional = citaDAO.findCitasByPacienteAndEstado(numTarjetaSanitaria);
         TipoEstado estadoAnular = TipoEstado.ANULADA;
         if (citaOptional.contains(citaAnular)){
             citaAnular.setEstado(estadoAnular);
-            return citaRepositorio.save(citaAnular);
+            return citaDAO.save(citaAnular);
         }
         return null;
     }
@@ -51,7 +51,7 @@ public class PacienteServiciosImpl implements PacienteServicios{
         Cita newCita = new Cita();
         TipoEstado citaEstadoCreacion = TipoEstado.PLANIFICADA;
         Float duracionCitaDefault = (float) 15;
-        Optional<Paciente> pacienteCreadorCita = pacienteRepositorio.findById(id);
+        Optional<Paciente> pacienteCreadorCita = pacienteDAO.findById(id);
         if(!pacienteCreadorCita.isPresent()){
             return null;
         }
@@ -67,7 +67,7 @@ public class PacienteServiciosImpl implements PacienteServicios{
                 newCita.setPaciente(paciente);
                 newCita.setFecha(fecha);
                 newCita.setHora(horaCita);
-                return citaRepositorio.save(newCita);
+                return citaDAO.save(newCita);
             }
         }
         return null;
@@ -75,38 +75,38 @@ public class PacienteServiciosImpl implements PacienteServicios{
 
     @Override
     public List<Receta> obtenerRecetasPaciente(String numTarjetaSanitaria) {
-        return recetaRepositorio.findRecetasByEstado(numTarjetaSanitaria);
+        return recetaDAO.findRecetasByEstado(numTarjetaSanitaria);
     }
 
     @Override
     public List<Prescripcion> devolverPrescripcionPacientes(String numTarjetaSanitaria) {
-        Optional<Paciente> pacientePrescrip = pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
-        return pacientePrescrip.map(paciente -> prescripcionRepositorio.findPrescripcionsByPaciente(pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria).get())).orElse(null);
+        Optional<Paciente> pacientePrescrip = pacienteDAO.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
+        return pacientePrescrip.map(paciente -> prescripcionDAO.findPrescripcionsByPaciente(pacienteDAO.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria).get())).orElse(null);
     }
 
     @Override
     public Paciente viewPaciente(Long id) {
-        Optional<Paciente> pacienteBusq = pacienteRepositorio.findById(id);
+        Optional<Paciente> pacienteBusq = pacienteDAO.findById(id);
         return pacienteBusq.orElse(null);
     }
 
     @Override
     public Paciente editPaciente(Long id,Paciente editPaciente) {
-        Optional<Paciente> pacientoBusq = pacienteRepositorio.findById(id);
+        Optional<Paciente> pacientoBusq = pacienteDAO.findById(id);
         if (pacientoBusq.isPresent() && pacientoBusq.get().getId().equals(editPaciente.getId())){
-            return pacienteRepositorio.save(editPaciente);
+            return pacienteDAO.save(editPaciente);
         }
         return null;
     }
      @Override
     public List<Time> tiempoCitasOcupadas(String numTarjetaSanitaria, Date fecha) {
-        Optional<Paciente> paciente= pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
+        Optional<Paciente> paciente= pacienteDAO.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
         if(!paciente.isPresent()){
             return null;
         }
-        Optional<Medico> medicoCita = medicoRepositorio.findMedicoByNumeroColegiado(paciente.get().getMedico().getNumeroColegiado());
+        Optional<Medico> medicoCita = medicoDAO.findMedicoByNumeroColegiado(paciente.get().getMedico().getNumeroColegiado());
         if (medicoCita.isPresent() && fecha != null){
-            List<Cita> citasActuales = citaRepositorio.findAppointmentsByMedicoAndFecha(medicoCita.get(), fecha);
+            List<Cita> citasActuales = citaDAO.findAppointmentsByMedicoAndFecha(medicoCita.get(), fecha);
             List<Time> horaDisponible = new ArrayList<>();
             for (Cita cita : citasActuales){
                 horaDisponible.add(cita.getHora());

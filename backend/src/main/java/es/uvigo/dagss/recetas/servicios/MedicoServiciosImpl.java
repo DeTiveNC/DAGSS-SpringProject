@@ -1,7 +1,7 @@
 package es.uvigo.dagss.recetas.servicios;
 
 import es.uvigo.dagss.recetas.entidades.*;
-import es.uvigo.dagss.recetas.repositorios.*;
+import es.uvigo.dagss.recetas.daos.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,85 +18,85 @@ import java.util.*;
 public class MedicoServiciosImpl implements MedicoServicios{
     private final int maxCajas=1;
     @Autowired
-    private CitaRepositorio citaRepositorio;
+    private CitaDAO citaDAO;
     @Autowired
-    private MedicoRepositorio medicoRepositorio;
+    private MedicoDAO medicoDAO;
     @Autowired
-    private PacienteRepositorio pacienteRepositorio;
+    private PacienteDAO pacienteDAO;
     @Autowired
-    private PrescripcionRepositorio prescripcionRepositorio;
+    private PrescripcionDAO prescripcionDAO;
     @Autowired
-    private RecetaRepositorio recetaRepositorio;
+    private RecetaDAO recetaDAO;
     @Autowired
-    private MedicamentoRepositorio medicamentoRepositorio;
+    private MedicamentoDAO medicamentoDAO;
     @Override
     public List<Cita> devolverCitasMedico(String login) {
-        Optional<Medico> medicoBusq = medicoRepositorio.findMedicoByLogin(login);
-        return medicoBusq.map(medico -> citaRepositorio.findCitasByMedico(medico)).orElse(null);
+        Optional<Medico> medicoBusq = medicoDAO.findMedicoByLogin(login);
+        return medicoBusq.map(medico -> citaDAO.findCitasByMedico(medico)).orElse(null);
     }
 
     @Override
     public Cita ausenciaPaciente(String numTarjetaSanitaria, Cita cita) {
-        List<Cita> pacienteOptional = citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
+        List<Cita> pacienteOptional = citaDAO.findCitasByPacienteAndEstado(numTarjetaSanitaria);
         TipoEstado estadoAusente = TipoEstado.AUSENTE;
         if (pacienteOptional.contains(cita)){
             cita.setEstado(estadoAusente);
-            return citaRepositorio.save(cita);
+            return citaDAO.save(cita);
         }
         return null;
     }
 
     @Override
     public Cita devolverCitaActual(String numColegiado, Date fechaCita,Time timeCita) {
-        Optional<Medico> citaBusq = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        Optional<Medico> citaBusq = medicoDAO.findMedicoByNumeroColegiado(numColegiado);
         return citaBusq.map(
-                medico -> citaRepositorio.findAppointmentByMedicoAndFechaAndHora(medico, fechaCita, timeCita))
+                medico -> citaDAO.findAppointmentByMedicoAndFechaAndHora(medico, fechaCita, timeCita))
                 .orElse(null);
     }
     @Override
     public Cita anularCita(String numTarjetaSanitaria,Cita cita) {
-        List<Cita> citaBusq = citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
+        List<Cita> citaBusq = citaDAO.findCitasByPacienteAndEstado(numTarjetaSanitaria);
         TipoEstado tipoEstadoAnulada = TipoEstado.ANULADA;
         if (citaBusq.contains(cita)){
             cita.setEstado(tipoEstadoAnulada);
-            return citaRepositorio.save(cita);
+            return citaDAO.save(cita);
         }
         return null;
     }
 
     @Override
     public Cita completarCita(String numTarjetaSanitaria, Cita cita) {
-        List<Cita> citaList = citaRepositorio.findCitasByPacienteAndEstado(numTarjetaSanitaria);
+        List<Cita> citaList = citaDAO.findCitasByPacienteAndEstado(numTarjetaSanitaria);
         TipoEstado estadoCompletada = TipoEstado.COMPLETADA;
         System.out.println(citaList);
         System.out.println(citaList.contains(cita));
         if (citaList.contains(cita)){
             cita.setEstado(estadoCompletada);
-            return citaRepositorio.save(cita);
+            return citaDAO.save(cita);
         }
         return null;
     }
 
     @Override
     public List<Medicamento> devolverMedicamentos(String valor1, String valor2, String valor3, String valor4) {
-        return medicamentoRepositorio.findMedicamentosByNombreComercialAndFabricanteAndFamiliaAndPrincipioActivo(valor1,valor2,valor3,valor4);
+        return medicamentoDAO.findMedicamentosByNombreComercialAndFabricanteAndFamiliaAndPrincipioActivo(valor1,valor2,valor3,valor4);
     }
 
     @Override
     public Prescripcion crearPrescripcionMedico(Medicamento medicamento, String numColegiado, String numTarjetaSanitaria, Double dosis, String indicaciones, Date fechFinPres) {
         TipoEstado estadoActivo = TipoEstado.ACTIVO;
-        Optional<Medico> medicoOptional = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        Optional<Medico> medicoOptional = medicoDAO.findMedicoByNumeroColegiado(numColegiado);
         if(medicoOptional.isEmpty()){
             return null;
         }
-        Optional<Paciente> pacienteOptional= pacienteRepositorio.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
+        Optional<Paciente> pacienteOptional= pacienteDAO.findPacienteByNumTarjetaSanitaria(numTarjetaSanitaria);
         if(pacienteOptional.isEmpty()){
             return null;
         }
         Medico medico=medicoOptional.get();
         Paciente paciente= pacienteOptional.get();
         Prescripcion prescripcion = new Prescripcion(medicamento, medico, paciente, dosis, indicaciones, new Date(new java.util.Date().getTime()) , fechFinPres, estadoActivo);
-        prescripcion = prescripcionRepositorio.save(prescripcion);
+        prescripcion = prescripcionDAO.save(prescripcion);
         generarRecetas(prescripcion, this.maxCajas);
         return prescripcion;
     }
@@ -110,29 +110,29 @@ public class MedicoServiciosImpl implements MedicoServicios{
             Date startDate=Date.valueOf(prescripcion.getFechInPres().toLocalDate().plusDays((i)*intervalo/ncajas));
             Date endDate=Date.valueOf(prescripcion.getFechInPres().toLocalDate().plusDays((i+1)*intervalo/ncajas));
             Receta receta= new Receta(prescripcion, i+1, startDate , endDate, maxCajasPerRecipe, estadoPlanificada, null);
-            recetaRepositorio.save(receta);
+            recetaDAO.save(receta);
         }
     }
 
     @Override
     public Medico viewMedico(Long id) {
-        Optional<Medico> medicoView = medicoRepositorio.findById(id);
+        Optional<Medico> medicoView = medicoDAO.findById(id);
         return medicoView.orElse(null);
     }
 
     @Override
     public Medico editMedico(Long id, Medico editMedico) {
-        Optional<Medico> medicoBusq = medicoRepositorio.findById(id);
+        Optional<Medico> medicoBusq = medicoDAO.findById(id);
         if (medicoBusq.isPresent() && medicoBusq.get().getId().equals(editMedico.getId())){
-            return medicoRepositorio.save(editMedico);
+            return medicoDAO.save(editMedico);
         }
         return null;
     }
     @Override
     public List<Time> tiempoCitasOcupadas(String numColegiado, Date fecha) {
-        Optional<Medico> medicoCita = medicoRepositorio.findMedicoByNumeroColegiado(numColegiado);
+        Optional<Medico> medicoCita = medicoDAO.findMedicoByNumeroColegiado(numColegiado);
         if (medicoCita.isPresent() && fecha != null){
-            List<Cita> citasActuales = citaRepositorio.findAppointmentsByMedicoAndFecha(medicoCita.get(), fecha);
+            List<Cita> citasActuales = citaDAO.findAppointmentsByMedicoAndFecha(medicoCita.get(), fecha);
             List<Time> horaDisponible = new ArrayList<>();
             for (Cita cita : citasActuales){
                 horaDisponible.add(cita.getHora());
