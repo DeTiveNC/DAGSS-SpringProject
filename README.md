@@ -28,7 +28,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 mysql -u root -p    [pedirá la contraseña de MySQL]
 
 mysql> create database recetas; 
-mysql> create user recetas@'%' identified by "recetas"; ** No es lo mejor el '%' porque podrían acceder de forma externa **
+mysql> create user recetas@'%' identified by "recetas"; **No es lo mejor el '%' porque podrían acceder de forma externa**
 mysql> grant all privileges on recetas.* to recetas@'%';
 
 ```
