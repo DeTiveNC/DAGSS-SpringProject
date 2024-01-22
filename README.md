@@ -27,9 +27,9 @@ export PATH=$JAVA_HOME/bin:$PATH
 ```sh
 mysql -u root -p    [pedirá la contraseña de MySQL]
 
-mysql> create database recetas;
-mysql> create user recetas@localhost identified by "recetas";
-mysql> grant all privileges on recetas.* to recetas@localhost;
+mysql> create database recetas; 
+mysql> create user recetas@'%' identified by "recetas"; ** No es lo mejor el '%' porque podrían acceder de forma externa **
+mysql> grant all privileges on recetas.* to recetas@'%';
 
 ```
 
@@ -68,6 +68,7 @@ Dependencias a incluir:
     Spring Web
     Spring Data JPA
     MySQLDriver
+    Swagger
     Spring HATEOAS  (opc)
     Lombook  (opc)
 ```
@@ -87,6 +88,10 @@ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.properties.hibernate.show_sql=true
 spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImplle
+springdoc.api-docs.path=/swagger
+springdoc.swagger-ui.path=/swagger
+springdoc.packages-to-scan=es.uvigo.dagss.recetas.controlador
+springdoc.api-docs.enabled=true
 ```
 
 ###   MERE   ###
