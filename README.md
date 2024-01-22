@@ -23,15 +23,16 @@ export PATH=$JAVA_HOME/bin:$PATH
 ### Crear BD para los ejemplos (si no se ha hecho antes)
 
 - Crear BD "recetas" en MySQL
-
+  
 ```sh
 mysql -u root -p    [pedirá la contraseña de MySQL]
 
 mysql> create database recetas; 
-mysql> create user recetas@'%' identified by "recetas"; **No es lo mejor el '%' porque podrían acceder de forma externa**
+mysql> create user recetas@'%' identified by "recetas";
 mysql> grant all privileges on recetas.* to recetas@'%';
 
 ```
+**Note**:**No es recomendable el '%' porque podrían acceder de forma externa**
 
 Adicionalmente, puede ser necesario establecer un formato de fecha compatible
 
