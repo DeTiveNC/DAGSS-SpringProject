@@ -18,7 +18,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 ### Inicializar Mysql con PhpMyAdmin para configuración más rapida
 
-- docker compose up: en la carpeta y el resto ya esta
+- **Docker compose up** : en la carpeta y el resto ya esta
 
 ### Crear BD para los ejemplos (si no se ha hecho antes)
 
