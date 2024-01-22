@@ -20,7 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.sql.Date;
 import java.util.List;
 
@@ -73,14 +75,13 @@ public class AdminControlador {
     @Operation(summary = "Crear un nuevo Admin",
             description = "Este endpoint crea un nuevo admin.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Creación exitosa de un admin"),
+            @ApiResponse(responseCode = "201", description = "Creación exitosa de un admin"),
             @ApiResponse(responseCode = "400", description = "Error al crear un admin")
     })
     public ResponseEntity<Administrador> nuevoAdministrador(@RequestBody Administrador administrador){
         Administrador nuevoAdministrador = administradorServicios.newAdministrador(administrador);
-        return nuevoAdministrador != null
-                ? new ResponseEntity<>(nuevoAdministrador, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        URI uri = crearAdministradorUri(nuevoAdministrador);
+        return ResponseEntity.created(uri).body(nuevoAdministrador);
     }
     @GetMapping(path = "/centro/todosCentros")
     @Operation(summary = "Lista de todos los centros",
@@ -138,14 +139,13 @@ public class AdminControlador {
     @Operation(summary = "Crear un nuevo Centro",
             description = "Este endpoint crea un nuevo centro.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Creación exitosa de un centro"),
+            @ApiResponse(responseCode = "201", description = "Creación exitosa de un centro"),
             @ApiResponse(responseCode = "400", description = "Error al crear un centro")
     })
     public ResponseEntity<CentroDeSalud> nuevoCentroSalud(@RequestBody CentroDeSalud centroDeSaludNuevo){
         CentroDeSalud nuevoCentroDeSalud = administradorServicios.newCentroDeSalud(centroDeSaludNuevo);
-        return nuevoCentroDeSalud != null
-                ? new ResponseEntity<>(nuevoCentroDeSalud, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        URI uri = crearCentroDeSaludUri(nuevoCentroDeSalud);
+        return ResponseEntity.created(uri).body(nuevoCentroDeSalud);
     }
     @GetMapping(path = "/medico/todoMedicos")
     @Operation(summary = "Listar medicos",
@@ -203,14 +203,13 @@ public class AdminControlador {
     @Operation(summary = "Crear un nuevo Medico",
             description = "Este endpoint crea un nuevo medico.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Creación exitosa de un medico"),
+            @ApiResponse(responseCode = "201", description = "Creación exitosa de un medico"),
             @ApiResponse(responseCode = "400", description = "Error al crear un medico")
     })
     public ResponseEntity<Medico> nuevoMedico(@RequestBody Medico medicoNuevo){
         Medico nuevoMedico = administradorServicios.newMedicoA(medicoNuevo);
-        return nuevoMedico != null
-                ? new ResponseEntity<>(nuevoMedico, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        URI uri = crearMedicoUri(nuevoMedico);
+        return ResponseEntity.created(uri).body(nuevoMedico);
     } 
     @GetMapping(path = "/paciente/todoPaciente")
     @Operation(summary = "Lista de todos los pacientes",
@@ -268,14 +267,13 @@ public class AdminControlador {
     @Operation(summary = "Crear un nuevo paciente",
             description = "Este endpoint crea un nuevo paciente.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Creación exitosa de un paciente"),
+            @ApiResponse(responseCode = "201", description = "Creación exitosa de un paciente"),
             @ApiResponse(responseCode = "400", description = "Error al crear un paciente")
     })
     public ResponseEntity<Paciente> nuevoPaciente(@RequestBody Paciente pacienteNuevo){
         Paciente nuevoPaciente = administradorServicios.newPaciente(pacienteNuevo);
-        return nuevoPaciente != null
-                ? new ResponseEntity<>(nuevoPaciente, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        URI uri = crearPacienteUri(nuevoPaciente);
+        return ResponseEntity.created(uri).body(nuevoPaciente);
     } 
     @GetMapping(path = "/farmacia/todoFarmacia")
     @Operation(summary = "Ver todos los perfiles de las farmacias",
@@ -333,14 +331,13 @@ public class AdminControlador {
     @Operation(summary = "Crear una nueva farmacia",
             description = "Este endpoint crea una nueva farmacia.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Creación exitosa de farmacia"),
+            @ApiResponse(responseCode = "201", description = "Creación exitosa de farmacia"),
             @ApiResponse(responseCode = "400", description = "Error al crear una farmacia")
     })
     public ResponseEntity<Farmacia> nuevoFarmacia(@RequestBody Farmacia farmaciaNuevo){
         Farmacia nuevoFarmacia = administradorServicios.newFarmacia(farmaciaNuevo);
-        return nuevoFarmacia != null
-                ? new ResponseEntity<>(nuevoFarmacia, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        URI uri = crearFarmaciaUri(nuevoFarmacia);
+        return ResponseEntity.created(uri).body(nuevoFarmacia);
     } 
     @GetMapping(path = "/cita/{fecha}")
     @Operation(summary = "Ver citas segun fecha",
@@ -443,14 +440,32 @@ public class AdminControlador {
     @Operation(summary = "Crear un nuevo medicamento",
             description = "Este endpoint crea un nuevo medicamento.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Creación exitosa de un medicamento"),
+            @ApiResponse(responseCode = "201", description = "Creación exitosa de un medicamento"),
             @ApiResponse(responseCode = "400", description = "Error al crear un medicamento")
     })
     public ResponseEntity<Medicamento> nuevoMedicamento(@RequestBody Medicamento medicamentoNuevo){
         Medicamento nuevoMedicamento = administradorServicios.newMedicamento(medicamentoNuevo);
-        return nuevoMedicamento != null
-                ? new ResponseEntity<>(nuevoMedicamento, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-    } 
+        URI uri = crearMedicamentoUri(nuevoMedicamento);
+        return ResponseEntity.created(uri).body(nuevoMedicamento);
+    }
+
+    private URI crearFarmaciaUri(Farmacia administrador){
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(administrador.getId()).toUri();
+    }
+    private URI crearAdministradorUri(Administrador administrador){
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(administrador.getId()).toUri();
+    }
+    private URI crearPacienteUri(Paciente administrador){
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(administrador.getId()).toUri();
+    }
+    private URI crearMedicoUri(Medico administrador){
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(administrador.getId()).toUri();
+    }
+    private URI crearMedicamentoUri(Medicamento administrador){
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(administrador.getNombreComercial()).toUri();
+    }
+    private URI crearCentroDeSaludUri(CentroDeSalud administrador){
+        return ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(administrador.getNombre()).toUri();
+    }
 
 }

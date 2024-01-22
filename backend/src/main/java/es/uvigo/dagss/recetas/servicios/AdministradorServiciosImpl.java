@@ -173,10 +173,10 @@ public class AdministradorServiciosImpl implements AdministradorServicios {
             return null;
         }
         Random rmd = new Random();
-        List<CentroDeSalud> centroDeSaludEscogido = centroDeSaludRepositorio.findCentroDeSaludsByNombreAndDireccion(null, paciente.getDireccion().getLocalidad());
+        List<CentroDeSalud> centroDeSaludEscogido = centroDeSaludRepositorio.findCentroDeSaludsByNombreAndDireccionProvincia(null, paciente.getDireccion().getProvincia());
         if (!centroDeSaludEscogido.isEmpty()){
             CentroDeSalud CentroSaludRMD = centroDeSaludEscogido.get(rmd.nextInt(centroDeSaludEscogido.size()));
-            List<Medico> medicoEscogido = medicoRepositorio.findMedicosByNombreAndCentroDeSaludDireccionLocalidad(CentroSaludRMD.getDireccion().getLocalidad(), null);
+            List<Medico> medicoEscogido = medicoRepositorio.findMedicosByNombreAndCentroDeSaludDireccionProvincia(CentroSaludRMD.getDireccion().getProvincia(), null);
             if (!medicoEscogido.isEmpty()){
                 paciente.setMedico(medicoEscogido.get(rmd.nextInt(medicoEscogido.size())));
                 paciente.setCentroDeSalud(CentroSaludRMD);

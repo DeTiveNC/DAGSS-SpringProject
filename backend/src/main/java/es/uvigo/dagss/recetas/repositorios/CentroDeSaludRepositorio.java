@@ -14,4 +14,7 @@ public interface CentroDeSaludRepositorio extends JpaRepository<CentroDeSalud, S
     @Query("SELECT c FROM CentroDeSalud c WHERE (:term is null or LOWER(c.nombre) LIKE LOWER(CONCAT('%', :term, '%'))) AND (:term2 is null or LOWER(c.direccion.localidad) LIKE LOWER(CONCAT('%', :term2, '%')))")
     List<CentroDeSalud> findCentroDeSaludsByNombreAndDireccion(@Param("term") String term, @Param("term2") String term2);
     Optional<CentroDeSalud> findCentroDeSaludByNombre(String nombre);
+    @Query("SELECT c FROM CentroDeSalud c WHERE (:term is null or LOWER(c.nombre) LIKE LOWER(CONCAT('%', :term, '%'))) AND (:term2 is null or LOWER(c.direccion.provincia) LIKE LOWER(CONCAT('%', :term2, '%')))")
+    List<CentroDeSalud> findCentroDeSaludsByNombreAndDireccionProvincia(@Param("term") String term, @Param("term2") String term2);
+
 }
