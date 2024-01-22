@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>es.uvigo.dagss</groupId>
 	<artifactId>recetas</artifactId>
-	<version>0.1</version>
+	<version>1.0</version>
 	<name>Recetas</name>
 	<description>Proyecto Recetas (DAGSS 23/24)</description>
 	<properties>
