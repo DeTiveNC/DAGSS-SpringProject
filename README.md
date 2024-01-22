@@ -90,4 +90,5 @@ spring.jpa.hibernate.naming.physical-strategy=org.hibernate.boot.model.naming.Ph
 ```
 
 ###   MERE   ###
-![Mere](https:///github.com/DeTiveNC/DAGSS-SpringProject/doc/DiagramaE-R.drawio(1).png)
+![MERE](https://github.com/DeTiveNC/DAGSS-SpringProject/assets/116792124/8455bbd9-5e47-4c6b-b5a4-e6c7b28381e2)
+
